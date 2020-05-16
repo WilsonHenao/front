@@ -11,15 +11,20 @@ import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
+import {MatRadioModule} from '@angular/material/radio';
 
 import { ExamenComponent } from './examen/examen.component';
 import { EstudianteComponent } from './estudiante/estudiante.component';
 import { ProfesorComponent } from './profesor/profesor.component';
+import { TipoUnoComponent } from './tipo-uno/tipo-uno.component';
+import { ExamenFormularioComponent } from './examen-formulario/examen-formulario.component';
+import { PreguntaFormularioComponent } from './pregunta-formulario/pregunta-formulario.component';
+import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
 
 
 
 @NgModule({
-  declarations: [ExamenComponent, EstudianteComponent, ProfesorComponent],
+  declarations: [ExamenComponent, EstudianteComponent, ProfesorComponent, TipoUnoComponent, ExamenFormularioComponent, PreguntaFormularioComponent, TipoDosComponent],
   imports: [
     CommonModule,
     EvaluacionesRoutingModule,
@@ -31,7 +36,8 @@ import { ProfesorComponent } from './profesor/profesor.component';
     MatInputModule,
     MatSelectModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatRadioModule
   ]
 })
 export class EvaluacionesModule { }

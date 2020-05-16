@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExamenComponent } from './examen.component';
+import { TipoDosComponent } from './tipo-dos.component';
 
-describe('ExamenComponent', () => {
-  let component: ExamenComponent;
-  let fixture: ComponentFixture<ExamenComponent>;
+describe('TipoDosComponent', () => {
+  let component: TipoDosComponent;
+  let fixture: ComponentFixture<TipoDosComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ExamenComponent]
+      declarations: [ TipoDosComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExamenComponent);
+    fixture = TestBed.createComponent(TipoDosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

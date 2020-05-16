@@ -1,69 +1,77 @@
-<mat-horizontal-stepper linear #stepper>
+<mat-vertical-stepper linear #stepper>
   <mat-step [stepControl]="examFormGroup">
 
-    <form [formGroup]="examFormGroup" class="formGroup">
-      <ng-template matStepLabel>Crear examen</ng-template><br>
-      <mat-form-field class="formField">
-        <mat-label>Descripción</mat-label>
-        <input matInput placeholder="Descripción" formControlName="descriptionCtrl" required>
-      </mat-form-field><br><br>
+    <ng-template matStepLabel>Crear examen</ng-template><br>
+    <lib-examen-formulario></lib-examen-formulario>
+    <div>
+      <button mat-button matStepperNext>Siguiente</button>
+    </div>
 
-      <mat-form-field class="formField">
-        <mat-label>Nota máxima</mat-label>
-        <input matInput placeholder="Nota máxima" formControlName="noteCtrl" required type="number">
-      </mat-form-field>
-
-      <div>
-        <button mat-button matStepperNext>Siguiente</button>
-      </div>
-    </form>
 
   </mat-step>
 
   <mat-step [stepControl]="questionFormGroup">
+    <ng-template matStepLabel>Agregar preguntas</ng-template><br>
     <form [formGroup]="questionFormGroup" class="formGroup">
-      <ng-template matStepLabel>Agregar preguntas</ng-template><br>
-      <mat-card>
-        <mat-form-field class="formField">
-          <mat-label>Descripción</mat-label>
-          <input matInput formControlName="descriptionQCtrl" placeholder="Descripción" required>
-        </mat-form-field>
 
-        <mat-form-field class="formField">
-          <mat-label>Imagen</mat-label>
-          <input matInput formControlName="imageCtrl">
-        </mat-form-field>
+      <div formArrayName="questions"
+        *ngFor="let question of questionFormGroup['controls'].questions['controls']; let i = index">
+        <div [formGroupName]="i">
+          <mat-card>
+            <mat-form-field class="formField">
+              <mat-label>Descripción</mat-label>
+              <input matInput formControlName="descriptionQCtrl" placeholder="Descripción" required>
+            </mat-form-field>
 
-        <mat-form-field class="formField">
-          <mat-label>Valoración</mat-label>
-          <input matInput formControlName="assessmentCtrl" placeholder="Valoración" required>
-        </mat-form-field>
+            <mat-form-field class="formField">
+              <mat-label>Imagen</mat-label>
+              <input matInput formControlName="imageCtrl" placeholder="Imagen">
+            </mat-form-field>
 
-        <mat-form-field class="formField">
-          <mat-label>Tipo de respuesta</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let tipo of tipos" [value]="tipo.value">
-              {{tipo.viewValue}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+            <mat-form-field class="formField">
+              <mat-label>Valoración</mat-label>
+              <input matInput formControlName="assessmentCtrl" placeholder="Valoración" required>
+            </mat-form-field>
 
-      </mat-card>
-      <br><div>
-        <button mat-button><mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon></button>
+            <mat-form-field class="formField">
+              <mat-label>Tipo de respuesta</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let item of tipos" [value]="tipos.id">
+                  {{tipos.typeOfResponseName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-card>
+
+          <div>
+            <button mat-button>
+              <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
+            </button>
+          </div>
+        </div>
       </div>
+
+      <br>
       <div>
-        <button mat-button matStepperPrevious>Atrás</button>
-        <button mat-button matStepperNext>Siguiente</button>
-      </div>
+        <button mat-button (click)="addQuestion()">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar
+        </button>
+      </div><br><br>
     </form>
+    <div>
+      <button mat-button matStepperPrevious>Atrás</button>
+      <button mat-button matStepperNext>Siguiente</button>
+    </div>
+
   </mat-step>
+
+
   <mat-step>
     <ng-template matStepLabel>Listo</ng-template>
     <p>You are now done.</p>
     <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-button matStepperPrevious>Atrás</button>
+      <button mat-button (click)="stepper.reset()">Restaurar</button>
     </div>
   </mat-step>
-</mat-horizontal-stepper>
+</mat-vertical-stepper>

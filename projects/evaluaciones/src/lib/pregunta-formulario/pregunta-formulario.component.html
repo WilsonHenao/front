@@ -1,0 +1,42 @@
+<form [formGroup]="questionFormGroup" class="formGroup">
+
+    <div formArrayName="questions"
+        *ngFor="let question of questionFormGroup['controls'].questions['controls']; let i = index">
+        <div [formGroupName]="i">
+            <mat-card>
+                <mat-form-field class="formField" appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="descriptionQCtrl" placeholder="Descripción" required>
+                </mat-form-field>
+
+                <mat-form-field class="formField" appearance="outline">
+                    <mat-label>Imagen</mat-label>
+                    <input matInput formControlName="imageCtrl" placeholder="Imagen">
+                </mat-form-field>
+
+                <mat-form-field class="formField" appearance="outline">
+                    <mat-label>Valoración</mat-label>
+                    <input matInput formControlName="assessmentCtrl" placeholder="Valoración" required>
+                </mat-form-field>
+
+                <mat-form-field class="formField" appearance="outline">
+                    <mat-label>Tipo de respuesta</mat-label>
+                    <mat-select formControlName="typesCtrl">
+                        <mat-option *ngFor="let item of tipos" [value]="item.id">
+                            {{item.responseTypeName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card>
+            <br>
+        </div>
+    </div>
+    <div>
+        <button mat-button (click)="addQuestion()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar
+        </button>
+        <button mat-button (click)="removeQuestion()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>Eliminar
+        </button>
+    </div><br><br>
+</form>
