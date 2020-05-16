@@ -17,10 +17,10 @@ export class ExamenComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) {
     this.valuesFormArray = this.formBuilder.group({
-      descriptionQCtrl: ['', Validators.required],
-      imageCtrl: ['', Validators.required],
-      assessmentCtrl: ['', Validators.required],
-      typesCtrl: ['']
+      description: ['', Validators.required],
+      image: ['', Validators.required],
+      assessment: ['', Validators.required],
+      typeOfResponse: ['']
     });
     this.questionFormGroup = this.formBuilder.group({
       questions: this.formBuilder.array([this.valuesFormArray])
@@ -29,8 +29,8 @@ export class ExamenComponent implements OnInit {
 
   ngOnInit() {
     this.examFormGroup = this.formBuilder.group({
-      descriptionCtrl: ['', Validators.required],
-      noteCtrl: ['', Validators.required]
+      introduction: ['', Validators.required],
+      maximumNote: ['', Validators.required]
     });
     this.getTypes();
   }
@@ -38,10 +38,10 @@ export class ExamenComponent implements OnInit {
   addQuestion() {
     const question = this.questionFormGroup.controls.questions as FormArray;
     question.push(this.formBuilder.group({
-      descriptionQCtrl: ['', Validators.required],
-      imageCtrl: ['', Validators.required],
-      assessmentCtrl: ['', Validators.required],
-      typesCtrl: ['']
+      description: ['', Validators.required],
+      image: ['', Validators.required],
+      assessment: ['', Validators.required],
+      typeOfResponse: ['']
     }));
   }
 

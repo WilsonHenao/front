@@ -13,7 +13,9 @@ export class ServiceService {
   /**
    * getAllTypeOfResponse
    */
-  public getAllTypeOfResponse() : Observable<any> {
+  public getAllTypeOfResponse(): Observable<any> {
     return this.http.get<any>(this.myUrl + 'api/v1/typeOfResponse');
   }
+
+
 }

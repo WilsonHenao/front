@@ -5,15 +5,15 @@
       <div [formGroupName]="i">
         <mat-form-field class="formField inputF" appearance="outline">
           <mat-label>Respuesta {{i + 1}}</mat-label>
-          <input matInput placeholder="Respuesta {{i + 1}}" formControlName="answerCtrl">
+          <input matInput placeholder="Respuesta {{i + 1}}" formControlName="options">
         </mat-form-field>
       </div>
     </div>
     <mat-form-field class="formField" appearance="outline">
       <mat-label>Seleccione la respuesta correcta</mat-label>
-      <mat-select formControlName="optionCtrl">
-        <mat-option *ngFor="let item of options.value" [value]="item.answerCtrl">
-          {{item.answerCtrl}}
+      <mat-select formControlName="correctAnswer">
+        <mat-option *ngFor="let item of options.value" [value]="item.options">
+          {{item.options}}
         </mat-option>
       </mat-select>
     </mat-form-field>
