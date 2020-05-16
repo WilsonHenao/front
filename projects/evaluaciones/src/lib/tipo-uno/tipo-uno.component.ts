@@ -11,12 +11,12 @@ export class TipoUnoComponent implements OnInit {
   optionFormGroup: FormGroup;
   valuesFormArray: FormGroup;
 
-  constructor(private _formBuilder: FormBuilder) {
-    this.valuesFormArray = this._formBuilder.group({
+  constructor(private formBuilder: FormBuilder) {
+    this.valuesFormArray = this.formBuilder.group({
       answerCtrl: ['', Validators.required],
     });
-    this.optionFormGroup = this._formBuilder.group({
-      options: this._formBuilder.array([this.valuesFormArray]),
+    this.optionFormGroup = this.formBuilder.group({
+      options: this.formBuilder.array([this.valuesFormArray]),
       optionCtrl: ['', Validators.required]
     });
   }
@@ -26,17 +26,13 @@ export class TipoUnoComponent implements OnInit {
 
   addOption() {
     const option = this.optionFormGroup.controls.options as FormArray;
-    option.push(this._formBuilder.group({
+    option.push(this.formBuilder.group({
       answerCtrl: ['', Validators.required],
     }))
   }
 
   get options(): FormArray {
     return this.optionFormGroup.get('options') as FormArray;
-  }
-
-  get option(): FormArray {
-    return this.optionFormGroup.get('options.answerCtrl') as FormArray;
   }
 
   removeOption() {

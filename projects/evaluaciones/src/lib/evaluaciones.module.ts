@@ -8,23 +8,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatCardModule} from '@angular/material/card';
-import {MatIconModule} from '@angular/material/icon';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { ExamenComponent } from './examen/examen.component';
 import { EstudianteComponent } from './estudiante/estudiante.component';
 import { ProfesorComponent } from './profesor/profesor.component';
 import { TipoUnoComponent } from './tipo-uno/tipo-uno.component';
-import { ExamenFormularioComponent } from './examen-formulario/examen-formulario.component';
-import { PreguntaFormularioComponent } from './pregunta-formulario/pregunta-formulario.component';
 import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 
 @NgModule({
-  declarations: [ExamenComponent, EstudianteComponent, ProfesorComponent, TipoUnoComponent, ExamenFormularioComponent, PreguntaFormularioComponent, TipoDosComponent],
+  declarations: [
+    ExamenComponent,
+    EstudianteComponent,
+    ProfesorComponent,
+    TipoUnoComponent,
+    TipoDosComponent
+  ],
   imports: [
     CommonModule,
     EvaluacionesRoutingModule,
@@ -37,7 +42,8 @@ import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
     MatSelectModule,
     MatCardModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDividerModule
   ]
 })
 export class EvaluacionesModule { }

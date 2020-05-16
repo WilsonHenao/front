@@ -1,29 +1,31 @@
 <form [formGroup]="optionFormGroup" class="formGroup">
+
+  <mat-card>
     <div formArrayName="options" *ngFor="let option of optionFormGroup['controls'].options['controls']; let i = index">
-        <div [formGroupName]="i">
-            <mat-card>
-                <mat-form-field class="formField" appearance="outline">
-                    <mat-label>Respuesta</mat-label>
-                    <input matInput placeholder="Respuesta" formControlName="answerCtrl">
-                </mat-form-field>
+      <div [formGroupName]="i">
+        <mat-form-field class="formField" appearance="outline">
+          <mat-label>Respuesta</mat-label>
+          <input matInput placeholder="Respuesta" formControlName="answerCtrl">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field class="formField" appearance="outline">
+      <mat-label>Seleccione la respuesta correcta</mat-label>
+      <mat-select formControlName="optionCtrl" multiple>
+        <mat-option *ngFor="let item of options.value" [value]="item.answerCtrl">
+          {{item.answerCtrl}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+  <br>
 
-                <mat-form-field class="formField" appearance="outline">
-                    <mat-label>¿Respuesta correcta?</mat-label>
-                    <mat-select formControlName="optionCtrl">
-                        <mat-option value="SI">SI</mat-option>
-                        <mat-option value="NO">NO</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card>
-        </div>
-    </div><br>
-
-    <div>
-        <button mat-button (click)="addOption()">
-            <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
-        </button>
-        <button mat-button (click)="removeOption()">
-            <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>
-        </button>
-    </div><br><br>
+  <div>
+    <button mat-button (click)="addOption()">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
+    </button>
+    <button mat-button (click)="removeOption()">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>
+    </button>
+  </div><br><br>
 </form>

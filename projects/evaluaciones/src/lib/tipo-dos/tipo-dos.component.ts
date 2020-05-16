@@ -11,13 +11,13 @@ export class TipoDosComponent implements OnInit {
   optionFormGroup: FormGroup;
   valuesFormArray: FormGroup;
 
-  constructor(private _formBuilder: FormBuilder) {
-    this.valuesFormArray = this._formBuilder.group({
+  constructor(private formBuilder: FormBuilder) {
+    this.valuesFormArray = this.formBuilder.group({
       answerCtrl: ['', Validators.required],
-      optionCtrl: ['']
     });
-    this.optionFormGroup = this._formBuilder.group({
-      options: this._formBuilder.array([this.valuesFormArray])
+    this.optionFormGroup = this.formBuilder.group({
+      options: this.formBuilder.array([this.valuesFormArray]),
+      optionCtrl: ['', Validators.required]
     });
   }
 
@@ -26,9 +26,8 @@ export class TipoDosComponent implements OnInit {
 
   addOption() {
     const option = this.optionFormGroup.controls.options as FormArray;
-    option.push(this._formBuilder.group({
-      answerCtrl: ['', Validators.required],
-      optionCtrl: ['', Validators.required]
+    option.push(this.formBuilder.group({
+      answerCtrl: ['', Validators.required]
     }))
   }
 
