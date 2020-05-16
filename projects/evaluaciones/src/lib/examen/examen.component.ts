@@ -29,6 +29,7 @@ export class ExamenComponent implements OnInit {
 
   ngOnInit() {
     this.examFormGroup = this.formBuilder.group({
+      id: 1,
       introduction: ['', Validators.required],
       maximumNote: ['', Validators.required]
     });
@@ -48,7 +49,6 @@ export class ExamenComponent implements OnInit {
   getTypes() {
     this.service.getAllTypeOfResponse().subscribe(success => {
       this.tipos = success;
-      console.log(success);
     }, error => {
       console.log(error);
     });
@@ -60,6 +60,16 @@ export class ExamenComponent implements OnInit {
 
   removeQuestion() {
     this.questions.removeAt(this.questions.length - 1);
+  }
+
+  saveExam() {
+    if (this.examFormGroup.valid) {
+      this.service.postExam(this.examFormGroup.value).subscribe(success => {
+        console.log(success);
+      }, error => {
+        console.error(error);
+      });
+    }
   }
 
 }

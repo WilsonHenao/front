@@ -18,4 +18,9 @@ export class ServiceService {
   }
 
 
+  public postExam(exam: any): Observable<any> {
+    return this.http.post(this.myUrl + 'api/v1/exam', exam);
+  }
+
+
 }
