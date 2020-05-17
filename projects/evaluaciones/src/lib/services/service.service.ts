@@ -17,10 +17,14 @@ export class ServiceService {
     return this.http.get<any>(this.myUrl + 'api/v1/typeOfResponse');
   }
 
+  public getAllExam(): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/exam/all')
+  }
 
   public postExam(exam: any): Observable<any> {
     return this.http.post(this.myUrl + 'api/v1/exam', exam);
   }
 
+  
 
 }

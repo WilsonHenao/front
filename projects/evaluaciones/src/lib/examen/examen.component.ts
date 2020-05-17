@@ -12,8 +12,10 @@ export class ExamenComponent implements OnInit {
   examFormGroup: FormGroup;
   questionFormGroup: FormGroup;
   tipos: any;
+  examen: any;
   valuesFormArray: FormGroup;
   typeResponse: number;
+  idExamen: number;
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) {
     this.valuesFormArray = this.formBuilder.group({
@@ -29,11 +31,12 @@ export class ExamenComponent implements OnInit {
 
   ngOnInit() {
     this.examFormGroup = this.formBuilder.group({
-      id: 1,
+      id: this.idExamen + 1,
       introduction: ['', Validators.required],
       maximumNote: ['', Validators.required]
     });
     this.getTypes();
+    this.getExam();
   }
 
   addQuestion() {
@@ -52,6 +55,17 @@ export class ExamenComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+  getExam(): void {
+    this.service.getAllExam().subscribe(success => {
+      this.examen = success;
+      this.idExamen = this.examen.length;
+      console.log(this.idExamen);
+      return this.idExamen as number;
+    }, error => {
+      console.log(error);
+    })
   }
 
   get questions(): FormArray {
