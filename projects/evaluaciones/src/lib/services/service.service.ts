@@ -18,13 +18,26 @@ export class ServiceService {
   }
 
   public getAllExam(): Observable<any> {
-    return this.http.get<any>(this.myUrl + 'api/v1/exam/all')
+    return this.http.get<any>(this.myUrl + 'api/v1/exam/all');
   }
+
+  public getAllQuestion(): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/question/all');
+  }
+
+  public getAllOptions(): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/option/all');
+  }
+
 
   public postExam(exam: any): Observable<any> {
     return this.http.post(this.myUrl + 'api/v1/exam', exam);
   }
 
-  
+  public postQuestion(question: any): Observable<any> {
+    return this.http.post(this.myUrl + 'api/v1/question', question);
+  }
+
+
 
 }

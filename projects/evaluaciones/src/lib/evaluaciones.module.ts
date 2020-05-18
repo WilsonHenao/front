@@ -12,13 +12,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { ExamenComponent } from './examen/examen.component';
 import { EstudianteComponent } from './estudiante/estudiante.component';
 import { ProfesorComponent } from './profesor/profesor.component';
 import { TipoUnoComponent } from './tipo-uno/tipo-uno.component';
 import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
-import { MatDividerModule } from '@angular/material/divider';
+
 
 
 
@@ -43,7 +45,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatCardModule,
     MatIconModule,
     MatRadioModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTabsModule
   ]
 })
 export class EvaluacionesModule { }
