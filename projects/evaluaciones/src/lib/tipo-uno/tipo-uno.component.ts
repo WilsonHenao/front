@@ -13,8 +13,6 @@ export class TipoUnoComponent implements OnInit, AfterViewChecked {
   @Output() formStatus = new EventEmitter<any>();
   optionFormGroup: FormGroup;
   valuesFormArray: FormGroup;
-  option: any;
-  idOption: number;
   bandera = false;
 
 
@@ -32,7 +30,9 @@ export class TipoUnoComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    this.onFormStatus();
+    setTimeout(() => {
+      this.onFormStatus();
+    }, 5000);
   }
 
   addOption() {
@@ -50,28 +50,11 @@ export class TipoUnoComponent implements OnInit, AfterViewChecked {
     this.options.removeAt(this.options.length - 1);
   }
 
-  getOption() {
-    this.service.getAllOptions().subscribe(success => {
-      this.option = success;
-      this.idOption = this.option.length + 1;
-      console.log('Opcion1 ' + this.idOption);
-    }, error => {
-      console.log(error);
-    });
-  }
-
-  saveOption() {
-    if (this.optionFormGroup.valid) {
-      this.optionFormGroup.controls.id.setValue(this.idOption);
-      console.log(this.optionFormGroup.value);
-    }
-  }
-
   onFormStatus() {
     if (this.optionFormGroup.valid) {
-      this.formStatus.emit({indexQuestion: this.indexQuestion, answers: this.optionFormGroup.value});
+      this.formStatus.emit({ indexQuestion: this.indexQuestion, answers: this.optionFormGroup.value });
     } else if (!this.optionFormGroup.valid) {
-      this.formStatus.emit({indexQuestion: this.indexQuestion, answers: null});
+      this.formStatus.emit({ indexQuestion: this.indexQuestion, answers: null });
     }
   }
 }

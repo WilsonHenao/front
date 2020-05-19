@@ -39,7 +39,7 @@ export class ExamenComponent implements OnInit {
     id: undefined,
     options: undefined,
     question: undefined
-  }
+  };
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) {
     this.optionFormGroup = this.formBuilder.group({
@@ -69,6 +69,7 @@ export class ExamenComponent implements OnInit {
     this.getTypes();
     this.getExam();
     this.getQuestion();
+    this.getOption();
   }
 
   addQuestion() {
@@ -106,22 +107,19 @@ export class ExamenComponent implements OnInit {
     this.service.getAllQuestion().subscribe(success => {
       this.question = success;
       this.idQuestion = this.question.length;
-      console.log('Pregunta ' + this.idQuestion);
     }, error => {
       console.log(error);
     });
     return this.idQuestion;
   }
 
-  getOption(): any{
+  getOption(): any {
     this.service.getAllOptions().subscribe(success => {
       this.option = success;
       this.idOption = this.option.length;
-      console.log('Opcion ' + this.idOption);
     }, error => {
       console.log(error);
     });
-    return this.idOption;
   }
 
   removeQuestion() {
@@ -137,19 +135,6 @@ export class ExamenComponent implements OnInit {
       }, error => {
         console.error(error);
       });
-      //this.questionFormGroup.value.questions.forEach(question => {
-      //  this.questionModel.id = this.idQuestion;
-      //this.questionModel.assessment = question.assessment;
-      //this.questionModel.correctAnswer = question.answers.correctAnswer;
-      //this.service.postExam(this.examFormGroup).subscribe(success => {
-      //question.answers.options.forEach(answer => {
-      //this.answerModel.id = 1;
-      //this.answerModel.option = answer.option;
-      //this.answerModel.question = this.idQuestion;
-      //});
-      //})
-      // console.log(question);
-      //});
     }
   }
 
@@ -161,27 +146,26 @@ export class ExamenComponent implements OnInit {
       this.questionModel.description = element.description;
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
-      console.log(element.answers.correctAnswer);
       this.questionModel.correctAnswer = element.answers.correctAnswer;
       this.questionModel.exam = idExam;
 
       this.service.postQuestion(this.questionModel).subscribe(success => {
-        this.saveOption(this.contQuestion,element);
-      })
+        this.saveOption(this.contQuestion, element, this.idOption);
+      });
     });
   }
 
-  saveOption(idOption: number, element: any){
-    this.contOption = this.getOption();
+  saveOption(idOption: number, element: any, index: number) {
     element.answers.options.forEach(answer => {
-      this.contOption = this.contOption + 1;
-      this.answerModel.id = this.contOption;
-      this.answerModel.options = answer.option;
+      index = index + 1;
+      this.answerModel.id = index;
+      this.answerModel.options = answer.options;
       this.answerModel.question = idOption;
 
+      console.log(element);
       this.service.postOption(this.answerModel).subscribe(success => {
         console.log(success);
-      })
+      });
     });
   }
 
