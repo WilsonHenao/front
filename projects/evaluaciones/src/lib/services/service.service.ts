@@ -29,13 +29,16 @@ export class ServiceService {
     return this.http.get<any>(this.myUrl + 'api/v1/option/all');
   }
 
-
   public postExam(exam: any): Observable<any> {
     return this.http.post(this.myUrl + 'api/v1/exam', exam);
   }
 
   public postQuestion(question: any): Observable<any> {
     return this.http.post(this.myUrl + 'api/v1/question', question);
+  }
+
+  public postOption(option: any): Observable<any> {
+    return this.http.post(this.myUrl + 'api/v1/option', option);
   }
 
 

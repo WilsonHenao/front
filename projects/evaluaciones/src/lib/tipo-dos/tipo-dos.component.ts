@@ -11,8 +11,6 @@ export class TipoDosComponent implements OnInit, AfterViewChecked {
 
   optionFormGroup: FormGroup;
   valuesFormArray: FormGroup;
-  option: any;
-  idOption: number;
 
   @Output()
   formStatus = new EventEmitter<boolean>();

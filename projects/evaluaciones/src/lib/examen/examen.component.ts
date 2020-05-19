@@ -16,14 +16,30 @@ export class ExamenComponent implements OnInit {
   tipos: any;
   examen: any;
   question: any;
+  option: any;
+  idOption: number;
   optionFormGroup: FormGroup;
   valuesFormArray: FormGroup;
   typeResponse: number;
   idExamen: number;
   idQuestion: number;
+  contQuestion: number;
+  contOption: number;
   validateFormAnswerFlag = true;
-  questionModel: Question;
-  answerModel: Option;
+  questionModel: Question = {
+    id: undefined,
+    description: undefined,
+    image: undefined,
+    assessment: undefined,
+    typeOfResponse: undefined,
+    correctAnswer: undefined,
+    exam: undefined
+  };
+  answerModel: Option = {
+    id: undefined,
+    options: undefined,
+    question: undefined
+  }
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) {
     this.optionFormGroup = this.formBuilder.group({
@@ -86,14 +102,26 @@ export class ExamenComponent implements OnInit {
     return this.questionFormGroup.get('questions') as FormArray;
   }
 
-  getQuestion() {
+  getQuestion(): any {
     this.service.getAllQuestion().subscribe(success => {
       this.question = success;
-      this.idQuestion = this.question.length + 1;
+      this.idQuestion = this.question.length;
       console.log('Pregunta ' + this.idQuestion);
     }, error => {
       console.log(error);
     });
+    return this.idQuestion;
+  }
+
+  getOption(): any{
+    this.service.getAllOptions().subscribe(success => {
+      this.option = success;
+      this.idOption = this.option.length;
+      console.log('Opcion ' + this.idOption);
+    }, error => {
+      console.log(error);
+    });
+    return this.idOption;
   }
 
   removeQuestion() {
@@ -126,16 +154,32 @@ export class ExamenComponent implements OnInit {
   }
 
   saveQuestion(idExam: number) {
+    this.contQuestion = this.getQuestion();
     this.questionFormGroup.value.questions.forEach(element => {
-      this.questionModel.id = this.idQuestion;
+      this.contQuestion = this.contQuestion + 1;
+      this.questionModel.id = this.contQuestion;
       this.questionModel.description = element.description;
-      this.questionModel.image = element.image;
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
-      this.questionModel.correctAnswer = element.answer.correctAnswer;
+      console.log(element.answers.correctAnswer);
+      this.questionModel.correctAnswer = element.answers.correctAnswer;
       this.questionModel.exam = idExam;
 
       this.service.postQuestion(this.questionModel).subscribe(success => {
+        this.saveOption(this.contQuestion,element);
+      })
+    });
+  }
+
+  saveOption(idOption: number, element: any){
+    this.contOption = this.getOption();
+    element.answers.options.forEach(answer => {
+      this.contOption = this.contOption + 1;
+      this.answerModel.id = this.contOption;
+      this.answerModel.options = answer.option;
+      this.answerModel.question = idOption;
+
+      this.service.postOption(this.answerModel).subscribe(success => {
         console.log(success);
       })
     });
