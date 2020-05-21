@@ -10,7 +10,11 @@
       <br>
       <mat-form-field class="formField" appearance="outline">
         <mat-label>Nota máxima</mat-label>
-        <input matInput formControlName="maximumNote" type="number" min="3" max="5">
+        <mat-select formControlName="maximumNote">
+          <mat-option value=3>3</mat-option>
+          <mat-option value=4>4</mat-option>
+          <mat-option value=5>5</mat-option>
+        </mat-select>
       </mat-form-field>
     </form>
     <mat-divider></mat-divider>

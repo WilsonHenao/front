@@ -25,7 +25,7 @@ export class TipoDosComponent implements OnInit, AfterViewChecked {
     this.optionFormGroup = this.formBuilder.group({
       id: '',
       options: this.formBuilder.array([this.valuesFormArray]),
-      correctAnswer: ['', Validators.required],
+      correctAnswer: [[], Validators.required],
       question: ''
     });
   }

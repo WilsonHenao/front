@@ -150,34 +150,41 @@ export class ExamenComponent implements OnInit {
       this.questionModel.description = element.description;
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
-      console.log(this.questionModel.typeOfResponse);
-      console.log(element.answers.correctAnswer);
-      if (this.questionModel.typeOfResponse === 2) {
-        let correctAnswer = '';
-        element.answers.correctAnswer.forEach(option => {
-          correctAnswer = correctAnswer + option + ',';
-        });
-        this.questionModel.correctAnswer = correctAnswer;
-      } else {
-        this.questionModel.correctAnswer = element.answers.correctAnswer;
-      }
+      let correctAnswer = '';
+      console.log(element.answers.correctAnswer.format_size());
+      element.answers.correctAnswer.forEach(option => {
+        correctAnswer = correctAnswer + option + ',';
+      });
+      this.questionModel.correctAnswer = correctAnswer;
+      //  console.log(this.questionModel.typeOfResponse);
+      //  console.log(element.answers.correctAnswer);
+      //  if (this.questionModel.typeOfResponse === 2) {
+      //    let correctAnswer = '';
+      //    element.answers.correctAnswer.forEach(option => {
+      //      correctAnswer = correctAnswer + option + ',';
+      //    });
+      //    this.questionModel.correctAnswer = correctAnswer;
+      //  } else {
+      //    this.questionModel.correctAnswer = element.answers.correctAnswer;
+      //  }
       this.questionModel.exam = idExam;
 
       this.service.postQuestion(this.questionModel).subscribe(success => {
-        const indexOption = this.getOption();
-        this.saveOption(this.contQuestion, element, indexOption);
+        this.saveOption(this.contQuestion, element);
       });
     });
   }
 
-  saveOption(idOption: number, element: any, index: number) {
+  saveOption(idOption: number, element: any) {
+    this.contOption = this.getOption();
     element.answers.options.forEach(answer => {
-      index = index + 1;
-      this.answerModel.id = index;
+      this.contOption = this.contOption + 1;
+      this.answerModel.id = this.contOption;
       this.answerModel.options = answer.options;
       this.answerModel.question = idOption;
 
       console.log(element);
+      console.log(idOption);
       this.service.postOption(this.answerModel).subscribe(success => {
         console.log(success);
       });

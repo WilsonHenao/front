@@ -22,7 +22,7 @@ export class TipoUnoComponent implements OnInit, AfterViewChecked {
     });
     this.optionFormGroup = this.formBuilder.group({
       options: this.formBuilder.array([this.valuesFormArray]),
-      correctAnswer: ['', Validators.required]
+      correctAnswer: [[], Validators.required]
     });
   }
 
