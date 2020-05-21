@@ -3,6 +3,7 @@ import { Question } from './../model/question.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ServiceService } from '../services/service.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'lib-examen',
@@ -129,6 +130,9 @@ export class ExamenComponent implements OnInit {
   saveExam() {
     if (this.examFormGroup.valid && this.questionFormGroup.valid) {
       this.examFormGroup.controls.id.setValue(this.idExamen);
+      this.questionFormGroup.value.questions.forEach(element => {
+        console.log(element);
+      });
       this.service.postExam(this.examFormGroup.value).subscribe(success => {
         const exam = success;
         this.saveQuestion(exam.id);
@@ -146,11 +150,22 @@ export class ExamenComponent implements OnInit {
       this.questionModel.description = element.description;
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
-      this.questionModel.correctAnswer = element.answers.correctAnswer;
+      console.log(this.questionModel.typeOfResponse);
+      console.log(element.answers.correctAnswer);
+      if (this.questionModel.typeOfResponse === 2) {
+        let correctAnswer = '';
+        element.answers.correctAnswer.forEach(option => {
+          correctAnswer = correctAnswer + option + ',';
+        });
+        this.questionModel.correctAnswer = correctAnswer;
+      } else {
+        this.questionModel.correctAnswer = element.answers.correctAnswer;
+      }
       this.questionModel.exam = idExam;
 
       this.service.postQuestion(this.questionModel).subscribe(success => {
-        this.saveOption(this.contQuestion, element, this.idOption);
+        const indexOption = this.getOption();
+        this.saveOption(this.contQuestion, element, indexOption);
       });
     });
   }
