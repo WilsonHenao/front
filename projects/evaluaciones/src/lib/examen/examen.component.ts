@@ -3,7 +3,6 @@ import { Question } from './../model/question.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ServiceService } from '../services/service.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'lib-examen',
@@ -100,6 +99,7 @@ export class ExamenComponent implements OnInit {
       console.log(error);
     });
   }
+  
   get questions(): FormArray {
     return this.questionFormGroup.get('questions') as FormArray;
   }

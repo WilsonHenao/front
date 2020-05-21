@@ -1,0 +1,8 @@
+.lista-examen {
+    height: 400px;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
