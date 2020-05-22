@@ -56,6 +56,14 @@ export class TipoDosComponent implements OnInit, AfterViewChecked {
 
   onFormStatus() {
     if (this.optionFormGroup.valid) {
+      if(this.optionFormGroup.value.correctAnswer.length > 1){
+        let correctAnswer = '';
+        this.optionFormGroup.value.correctAnswer.forEach(option => {
+          correctAnswer = correctAnswer + option + ',';
+        });
+        this.optionFormGroup.value.correctAnswer = correctAnswer;
+        this.formStatus.emit({ indexQuestion: this.indexQuestion, answers: this.optionFormGroup.value });
+      }
       this.formStatus.emit({ indexQuestion: this.indexQuestion, answers: this.optionFormGroup.value });
     } else if (!this.optionFormGroup.valid) {
       this.formStatus.emit({ indexQuestion: this.indexQuestion, answers: null });

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../services/service.service';
-import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'lib-estudiante',
@@ -13,7 +12,7 @@ export class EstudianteComponent implements OnInit {
   examen: any;
   idExamen: any;
 
-  constructor(private service: ServiceService, public dialog: MatDialog) { }
+  constructor(private service: ServiceService) { }
 
   ngOnInit(): void {
     this.getExam();
@@ -30,3 +29,4 @@ export class EstudianteComponent implements OnInit {
   }
 
 }
+

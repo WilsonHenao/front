@@ -50,8 +50,5 @@ import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
     MatTabsModule,
     MatTableModule
   ],
- // entryComponents: [
-   // RealizarExamenComponent
-  // ]
 })
 export class EvaluacionesModule { }

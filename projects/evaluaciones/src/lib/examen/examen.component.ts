@@ -150,15 +150,7 @@ export class ExamenComponent implements OnInit {
       this.questionModel.typeOfResponse = element.typeOfResponse;
       console.log(this.questionModel.typeOfResponse);
       console.log(element.answers.correctAnswer);
-      if (this.questionModel.typeOfResponse === 2) {
-        let correctAnswer = '';
-        element.answers.correctAnswer.forEach(option => {
-          correctAnswer = correctAnswer + option + ',';
-        });
-        this.questionModel.correctAnswer = correctAnswer;
-      } else {
-        this.questionModel.correctAnswer = element.answers.correctAnswer;
-      }
+      this.questionModel.correctAnswer = element.answers.correctAnswer;
       this.questionModel.exam = idExam;
       this.service.postQuestion(this.questionModel).subscribe(success => {
         const quest = success;
