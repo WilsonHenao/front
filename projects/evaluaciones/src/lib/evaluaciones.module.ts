@@ -31,7 +31,7 @@ import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
     EstudianteComponent,
     ProfesorComponent,
     TipoUnoComponent,
-    TipoDosComponent
+    TipoDosComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +49,9 @@ import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
     MatDividerModule,
     MatTabsModule,
     MatTableModule
-  ]
+  ],
+ // entryComponents: [
+   // RealizarExamenComponent
+  // ]
 })
 export class EvaluacionesModule { }
