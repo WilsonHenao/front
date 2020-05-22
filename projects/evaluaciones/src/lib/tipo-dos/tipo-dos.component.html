@@ -5,7 +5,7 @@
       <div [formGroupName]="i">
         <mat-form-field class="formField" appearance="outline">
           <mat-label>Respuesta</mat-label>
-          <input matInput placeholder="Respuesta" formControlName="options">
+          <input matInput placeholder="Respuesta {{i + 1}}" formControlName="options">
         </mat-form-field>
       </div>
     </div>

@@ -17,10 +17,9 @@ export class ExamenComponent implements OnInit {
   examen: any;
   question: any;
   option: any;
-  idOption: number;
+  idOptions: number;
   optionFormGroup: FormGroup;
   valuesFormArray: FormGroup;
-  typeResponse: number;
   idExamen: number;
   idQuestion: number;
   contQuestion: number;
@@ -99,7 +98,7 @@ export class ExamenComponent implements OnInit {
       console.log(error);
     });
   }
-  
+
   get questions(): FormArray {
     return this.questionFormGroup.get('questions') as FormArray;
   }
@@ -117,10 +116,11 @@ export class ExamenComponent implements OnInit {
   getOption(): any {
     this.service.getAllOptions().subscribe(success => {
       this.option = success;
-      this.idOption = this.option.length;
+      this.idOptions = this.option.length;
     }, error => {
       console.log(error);
     });
+    return this.idOptions;
   }
 
   removeQuestion() {
@@ -130,19 +130,17 @@ export class ExamenComponent implements OnInit {
   saveExam() {
     if (this.examFormGroup.valid && this.questionFormGroup.valid) {
       this.examFormGroup.controls.id.setValue(this.idExamen);
-      this.questionFormGroup.value.questions.forEach(element => {
-        console.log(element);
-      });
       this.service.postExam(this.examFormGroup.value).subscribe(success => {
         const exam = success;
-        this.saveQuestion(exam.id);
+        this.contOption = this.getOption();
+        this.saveQuestion(exam.id, this.contOption);
       }, error => {
         console.error(error);
       });
     }
   }
 
-  saveQuestion(idExam: number) {
+  saveQuestion(idExam: number, idOpt: number) {
     this.contQuestion = this.getQuestion();
     this.questionFormGroup.value.questions.forEach(element => {
       this.contQuestion = this.contQuestion + 1;
@@ -150,45 +148,36 @@ export class ExamenComponent implements OnInit {
       this.questionModel.description = element.description;
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
-      let correctAnswer = '';
-      console.log(element.answers.correctAnswer.format_size());
-      element.answers.correctAnswer.forEach(option => {
-        correctAnswer = correctAnswer + option + ',';
-      });
-      this.questionModel.correctAnswer = correctAnswer;
-      //  console.log(this.questionModel.typeOfResponse);
-      //  console.log(element.answers.correctAnswer);
-      //  if (this.questionModel.typeOfResponse === 2) {
-      //    let correctAnswer = '';
-      //    element.answers.correctAnswer.forEach(option => {
-      //      correctAnswer = correctAnswer + option + ',';
-      //    });
-      //    this.questionModel.correctAnswer = correctAnswer;
-      //  } else {
-      //    this.questionModel.correctAnswer = element.answers.correctAnswer;
-      //  }
+      console.log(this.questionModel.typeOfResponse);
+      console.log(element.answers.correctAnswer);
+      if (this.questionModel.typeOfResponse === 2) {
+        let correctAnswer = '';
+        element.answers.correctAnswer.forEach(option => {
+          correctAnswer = correctAnswer + option + ',';
+        });
+        this.questionModel.correctAnswer = correctAnswer;
+      } else {
+        this.questionModel.correctAnswer = element.answers.correctAnswer;
+      }
       this.questionModel.exam = idExam;
-
       this.service.postQuestion(this.questionModel).subscribe(success => {
-        this.saveOption(this.contQuestion, element);
+        const quest = success;
+        idOpt = this.saveOption(quest.id, element.answers, idOpt);
       });
     });
   }
 
-  saveOption(idOption: number, element: any) {
-    this.contOption = this.getOption();
-    element.answers.options.forEach(answer => {
-      this.contOption = this.contOption + 1;
-      this.answerModel.id = this.contOption;
+  saveOption(idOption: number, item: any, index: number): any {
+    item.options.forEach(answer => {
+      index = index + 1;
+      this.answerModel.id = index;
       this.answerModel.options = answer.options;
       this.answerModel.question = idOption;
 
-      console.log(element);
-      console.log(idOption);
       this.service.postOption(this.answerModel).subscribe(success => {
-        console.log(success);
       });
     });
+    return index;
   }
 
   validateFormAnswer(event) {
