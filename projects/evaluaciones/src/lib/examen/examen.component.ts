@@ -41,9 +41,14 @@ export class ExamenComponent implements OnInit {
   };
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) {
+    this.valuesFormArray = this.formBuilder.group({
+      options: ['', Validators.required],
+    });
     this.optionFormGroup = this.formBuilder.group({
-      options: [[], Validators.required],
-      correctAnswer: ['', Validators.required]
+      id: '',
+      options: this.formBuilder.array([this.valuesFormArray]),
+      correctAnswer: [[], Validators.required],
+      question: ''
     });
     this.valuesFormArray = this.formBuilder.group({
       description: ['', Validators.required],
@@ -81,6 +86,13 @@ export class ExamenComponent implements OnInit {
     }));
   }
 
+  addOption() {
+    const option = this.optionFormGroup.controls.options as FormArray;
+    option.push(this.formBuilder.group({
+      options: ['', Validators.required]
+    }));
+  }
+
   getTypes() {
     this.service.getAllTypeOfResponse().subscribe(success => {
       this.tipos = success;
@@ -101,6 +113,10 @@ export class ExamenComponent implements OnInit {
 
   get questions(): FormArray {
     return this.questionFormGroup.get('questions') as FormArray;
+  }
+
+  get options(): FormArray {
+    return this.optionFormGroup.get('options') as FormArray;
   }
 
   getQuestion(): any {
@@ -125,6 +141,10 @@ export class ExamenComponent implements OnInit {
 
   removeQuestion() {
     this.questions.removeAt(this.questions.length - 1);
+  }
+
+  removeOption() {
+    this.options.removeAt(this.options.length - 1);
   }
 
   saveExam() {
@@ -169,16 +189,6 @@ export class ExamenComponent implements OnInit {
       });
     });
     return index;
-  }
-
-  validateFormAnswer(event) {
-    if (event.answers !== null) {
-      this.questions.at(event.indexQuestion).get('answers').get('correctAnswer').setValue(event.answers.correctAnswer);
-      this.questions.at(event.indexQuestion).get('answers').get('options').setValue(event.answers.options);
-    } else {
-      this.questions.at(event.indexQuestion).get('answers').get('correctAnswer').setValue('');
-      this.questions.at(event.indexQuestion).get('answers').get('options').setValue([]);
-    }
   }
 
 }

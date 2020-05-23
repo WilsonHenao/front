@@ -4,7 +4,7 @@
     <div formArrayName="options" *ngFor="let option of optionFormGroup['controls'].options['controls']; let i = index">
       <div [formGroupName]="i">
         <mat-form-field class="formField" appearance="outline">
-          <mat-label>Respuesta</mat-label>
+          <mat-label>Respuesta {{i + 1}}</mat-label>
           <input matInput placeholder="Respuesta {{i + 1}}" formControlName="options">
         </mat-form-field>
       </div>
