@@ -148,8 +148,7 @@ export class ExamenComponent implements OnInit {
       this.questionModel.description = element.description;
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
-      console.log(this.questionModel.typeOfResponse);
-      console.log(element.answers.correctAnswer);
+      console.log(element);
       this.questionModel.correctAnswer = element.answers.correctAnswer;
       this.questionModel.exam = idExam;
       this.service.postQuestion(this.questionModel).subscribe(success => {
