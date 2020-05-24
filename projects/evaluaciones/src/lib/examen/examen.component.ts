@@ -42,7 +42,6 @@ export class ExamenComponent implements OnInit {
   }
 
   questionFormGroup = this.formBuilder.group({
-    name: ['', Validators.required],
     questions: this.formBuilder.array([this.createQuestion()])
   });
 
@@ -54,8 +53,8 @@ export class ExamenComponent implements OnInit {
     });
     this.getTypes();
     this.getExam();
-    // this.getQuestion();
-    // this.getOption();
+    this.getQuestion();
+    this.getOption();
   }
 
   createQuestion(): FormGroup {
@@ -115,76 +114,78 @@ export class ExamenComponent implements OnInit {
     return (this.questions.at(i).value.answers.options);
   }
 
-  // getQuestion(): any {
-  //   this.service.getAllQuestion().subscribe(success => {
-  //     this.question = success;
-  //     this.idQuestion = this.question.length;
-  //   }, error => {
-  //     console.log(error);
-  //   });
-  //   return this.idQuestion;
-  // }
+  getQuestion(): any {
+    this.service.getAllQuestion().subscribe(success => {
+      this.question = success;
+      this.idQuestion = this.question.length;
+    }, error => {
+      console.log(error);
+    });
+    return this.idQuestion;
+  }
 
-  // getOption(): any {
-  //   this.service.getAllOptions().subscribe(success => {
-  //     this.option = success;
-  //     this.idOptions = this.option.length;
-  //   }, error => {
-  //     console.log(error);
-  //   });
-  //   return this.idOptions;
-  // }
+  getOption(): any {
+    this.service.getAllOptions().subscribe(success => {
+      this.option = success;
+      this.idOptions = this.option.length;
+    }, error => {
+      console.log(error);
+    });
+    return this.idOptions;
+  }
 
   removeQuestion() {
     this.questions.removeAt(this.questions.length - 1);
   }
 
-   removeOption(i) {
-     this.getOptions(i).removeAt(this.getOptions(i).length - 1);
-   }
+  removeOption(i) {
+    this.getOptions(i).removeAt(this.getOptions(i).length - 1);
+  }
 
-  // saveExam() {
-  //   if (this.examFormGroup.valid && this.questionFormGroup.valid) {
-  //     this.examFormGroup.controls.id.setValue(this.idExamen);
-  //     this.service.postExam(this.examFormGroup.value).subscribe(success => {
-  //       const exam = success;
-  //       this.contOption = this.getOption();
-  //       this.saveQuestion(exam.id, this.contOption);
-  //     }, error => {
-  //       console.error(error);
-  //     });
-  //   }
-  // }
+  saveExam() {
+    if (this.examFormGroup.valid && this.questionFormGroup.valid) {
+      this.examFormGroup.controls.id.setValue(this.idExamen);
+      this.service.postExam(this.examFormGroup.value).subscribe(success => {
+        const exam = success;
+        this.contOption = this.getOption();
+        this.saveQuestion(exam.id, this.contOption);
+      }, error => {
+        console.error(error);
+      });
+    }
+    console.log(this.questionFormGroup.valid);
+  }
 
-  // saveQuestion(idExam: number, idOpt: number) {
-  //   this.contQuestion = this.getQuestion();
-  //   this.questionFormGroup.value.questions.forEach(element => {
-  //     this.contQuestion = this.contQuestion + 1;
-  //     this.questionModel.id = this.contQuestion;
-  //     this.questionModel.description = element.description;
-  //     this.questionModel.assessment = element.assessment;
-  //     this.questionModel.typeOfResponse = element.typeOfResponse;
-  //     console.log(element);
-  //     this.questionModel.correctAnswer = element.answers.correctAnswer;
-  //     this.questionModel.exam = idExam;
-  //     this.service.postQuestion(this.questionModel).subscribe(success => {
-  //       const quest = success;
-  //       idOpt = this.saveOption(quest.id, element.answers, idOpt);
-  //     });
-  //   });
-  // }
+  saveQuestion(idExam: number, idOpt: number) {
+    this.contQuestion = this.getQuestion();
+    this.questionFormGroup.value.questions.forEach(element => {
+      this.contQuestion = this.contQuestion + 1;
+      this.questionModel.id = this.contQuestion;
+      this.questionModel.description = element.description;
+      this.questionModel.assessment = element.assessment;
+      this.questionModel.typeOfResponse = element.typeOfResponse;
+      console.log(element);
+      this.questionModel.correctAnswer = element.answers.correctAnswer;
+      this.questionModel.exam = idExam;
+      this.service.postQuestion(this.questionModel).subscribe(success => {
+        const quest = success;
+        idOpt = this.saveOption(quest.id, element.answers, idOpt);
+      });
+    });
+  }
 
-  // saveOption(idOption: number, item: any, index: number): any {
-  //   item.options.forEach(answer => {
-  //     index = index + 1;
-  //     this.answerModel.id = index;
-  //     this.answerModel.options = answer.options;
-  //     this.answerModel.question = idOption;
-
-  //     this.service.postOption(this.answerModel).subscribe(success => {
-  //     });
-  //   });
-  //   return index;
-  // }
+  saveOption(idOption: number, item: any, index: number): any {
+    item.options.forEach(answer => {
+      index = index + 1;
+      this.answerModel.id = index;
+      this.answerModel.options = answer.option;
+      this.answerModel.question = idOption;
+      console.log(this.answerModel.id);
+      console.log(this.answerModel);
+      this.service.postOption(this.answerModel).subscribe(success => {
+      });
+    });
+    return index;
+  }
 
 }
