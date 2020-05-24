@@ -13,18 +13,19 @@ export class ExamenComponent implements OnInit {
 
   examFormGroup: FormGroup;
   questionFormGroup: FormGroup;
+  optionFormGroup: FormGroup;
+  valuesFormArray: FormGroup;
+  i: any;
   tipos: any;
   examen: any;
   question: any;
   option: any;
+  optiont: any;
   idOptions: number;
-  optionFormGroup: FormGroup;
-  valuesFormArray: FormGroup;
   idExamen: number;
   idQuestion: number;
   contQuestion: number;
   contOption: number;
-  validateFormAnswerFlag = true;
   questionModel: Question = {
     id: undefined,
     description: undefined,
@@ -86,11 +87,15 @@ export class ExamenComponent implements OnInit {
     }));
   }
 
-  addOption() {
-    const option = this.optionFormGroup.controls.options as FormArray;
-    option.push(this.formBuilder.group({
+  addOption(i) {
+    console.log(this.questionFormGroup);
+    this.optiont = this.getOptions(i);
+    console.log(this.optiont);
+    console.log(i);
+    this.optiont.push(this.formBuilder.group({
       options: ['', Validators.required]
-    }));
+    }))
+    
   }
 
   getTypes() {
@@ -119,6 +124,10 @@ export class ExamenComponent implements OnInit {
     return this.optionFormGroup.get('options') as FormArray;
   }
 
+  getOptions(i): FormArray {
+    return this.questions.controls[i].get('answers.options') as FormArray;
+  }
+
   getQuestion(): any {
     this.service.getAllQuestion().subscribe(success => {
       this.question = success;
@@ -143,8 +152,8 @@ export class ExamenComponent implements OnInit {
     this.questions.removeAt(this.questions.length - 1);
   }
 
-  removeOption() {
-    this.options.removeAt(this.options.length - 1);
+  removeOption(i) {
+    this.questions.value[i].answers.options.removeAt(this.questions.value[i].answers.options.length - 1);
   }
 
   saveExam() {
