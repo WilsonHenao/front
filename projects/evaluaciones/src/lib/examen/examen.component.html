@@ -1,153 +1,155 @@
 <mat-vertical-stepper linear #stepper>
 
-    <mat-step [stepControl]="examFormGroup">
-        <ng-template matStepLabel>Crear examen</ng-template><br>
-        <form [formGroup]="examFormGroup" class="formGroup">
-            <mat-form-field class="textareaF" appearance="outline">
-                <mat-label>Descripción</mat-label>
-                <textarea matInput placeholder="Descripción" formControlName="introduction"></textarea>
-            </mat-form-field>
-            <br>
+  <mat-step [stepControl]="examFormGroup">
+    <ng-template matStepLabel>Crear examen</ng-template><br>
+    <form [formGroup]="examFormGroup" class="formGroup">
+      <mat-form-field class="textareaF" appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput placeholder="Descripción" formControlName="introduction"></textarea>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="formField" appearance="outline">
+        <mat-label>Nota máxima</mat-label>
+        <mat-select formControlName="maximumNote">
+          <mat-option value=3>3</mat-option>
+          <mat-option value=4>4</mat-option>
+          <mat-option value=5>5</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <mat-divider></mat-divider>
+    <div class="buttonsStep">
+      <button mat-button matStepperNext>Siguiente</button>
+    </div>
+  </mat-step>
+
+  <mat-step [stepControl]="questionFormGroup">
+    <ng-template matStepLabel>Agregar preguntas</ng-template><br>
+    <form [formGroup]="questionFormGroup" class="formGroup">
+      <div formArrayName="questions"
+        *ngFor="let question of questionFormGroup['controls'].questions['controls']; let iq = index">
+        <div [formGroupName]="iq">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-subtitle>Pregunta {{iq + 1}}</mat-card-subtitle>
+            </mat-card-header>
+
             <mat-form-field class="formField" appearance="outline">
-                <mat-label>Nota máxima</mat-label>
-                <mat-select formControlName="maximumNote">
-                    <mat-option value=3>3</mat-option>
-                    <mat-option value=4>4</mat-option>
-                    <mat-option value=5>5</mat-option>
-                </mat-select>
+              <mat-label>Descripción</mat-label>
+              <input matInput formControlName="description" placeholder="Descripción" required>
             </mat-form-field>
-        </form>
-        <mat-divider></mat-divider>
-        <div class="buttonsStep">
-            <button mat-button matStepperNext>Siguiente</button>
-        </div>
-    </mat-step>
 
-    <mat-step [stepControl]="questionFormGroup">
-        <ng-template matStepLabel>Agregar preguntas</ng-template><br>
-        <form [formGroup]="questionFormGroup" class="formGroup">
-            <div formArrayName="questions" *ngFor="let question of questionFormGroup['controls'].questions['controls']; let i = index">
-                <div [formGroupName]="i">
-                    <mat-card>
-                        <mat-card-header>
-                            <mat-card-subtitle>Pregunta {{i + 1}}</mat-card-subtitle>
-                        </mat-card-header>
-                        <mat-form-field class="formField" appearance="outline">
-                            <mat-label>Descripción</mat-label>
-                            <input matInput formControlName="description" placeholder="Descripción" required>
-                        </mat-form-field>
+            <mat-form-field class="formField" appearance="outline">
+              <mat-label>Imagen</mat-label>
+              <input matInput formControlName="image" placeholder="Imagen" value=' '>
+            </mat-form-field>
 
-                        <mat-form-field class="formField" appearance="outline">
-                            <mat-label>Imagen</mat-label>
-                            <input matInput formControlName="image" placeholder="Imagen" value=' '>
-                        </mat-form-field>
+            <mat-form-field class="formField" appearance="outline">
+              <mat-label>Valoración</mat-label>
+              <input matInput formControlName="assessment" placeholder="Valoración" required>
+            </mat-form-field>
 
-                        <mat-form-field class="formField" appearance="outline">
-                            <mat-label>Valoración</mat-label>
-                            <input matInput formControlName="assessment" placeholder="Valoración" required>
-                        </mat-form-field>
+            <mat-form-field class="formField" appearance="outline">
+              <mat-label>Tipo de respuesta</mat-label>
+              <mat-select formControlName="typeOfResponse">
+                <mat-option *ngFor="let item of tipos" [value]="item.id">
+                  {{item.responseTypeName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
 
-                        <mat-form-field class="formField" appearance="outline">
-                            <mat-label>Tipo de respuesta</mat-label>
-                            <mat-select formControlName="typeOfResponse">
-                                <mat-option *ngFor="let item of tipos" [value]="item.id">
-                                    {{item.responseTypeName}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+            <div *ngIf="questions.value[iq].typeOfResponse === 1">
+              <div formGroupName="answers" class="formGroup">
+                <mat-card>
+                  <div formArrayName="options"
+                    *ngFor="let option of question['controls'].answers['controls'].options['controls']; let io = index">
+                    <div [formGroupName]="io">
+                      <mat-form-field class="formField inputF" appearance="outline">
+                        <mat-label>Respuesta {{io + 1}}</mat-label>
+                        <input matInput placeholder="Respuesta {{io + 1}}" formControlName="option">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <mat-form-field class="formField" appearance="outline">
+                    <mat-label>Seleccione la respuesta correcta</mat-label>
+                    <mat-select formControlName="correctAnswer">
+                      <mat-option *ngFor="let item of getOptionsCA(iq)" [value]="item.option">
+                        {{item.option}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-card>
+                <br>
 
-                        <div *ngIf="questions.value[i].typeOfResponse === 1">
-                            <form [formGroup]="optionFormGroup" class="formGroup">
-
-                                <mat-card>
-                                    <div formArrayName="options" *ngFor="let option of questionFormGroup['controls'].questions['controls[i]'].answers['controls'].options['controls']; let io = index">
-                                        <div [formGroupName]="io">
-                                            <mat-form-field class="formField inputF" appearance="outline">
-                                                <mat-label>Respuesta {{io + 1}}</mat-label>
-                                                <input matInput placeholder="Respuesta {{io + 1}}" formControlName="options">
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                    <mat-form-field class="formField" appearance="outline">
-                                        <mat-label>Seleccione la respuesta correcta</mat-label>
-                                        <mat-select formControlName="correctAnswer">
-                                            <mat-option *ngFor="let item of options.value" [value]="item.options">
-                                                {{item.options}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </mat-card>
-                                <br>
-
-                                <div>
-                                    <button mat-button (click)="addOption(i)">
+                <div>
+                  <button mat-button (click)="addOption(iq)">
                     <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar Respuesta
                   </button>
-                                    <button mat-button (click)="removeOption(i)">
+                   <button mat-button (click)="removeOption(iq)">
                     <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>Eliminar Respuesta
                   </button>
-                                </div><br><br>
-                            </form>
-                        </div>
-                        <div *ngIf="questions.value[i].typeOfResponse === 2">
-                            <form [formGroup]="optionFormGroup" class="formGroup">
-
-                                <mat-card>
-                                    <div formArrayName="options" *ngFor="let option of optionFormGroup['controls'].options['controls']; let io = index">
-                                        <div [formGroupName]="io">
-                                            <mat-form-field class="formField" appearance="outline">
-                                                <mat-label>Respuesta {{io + 1}}</mat-label>
-                                                <input matInput placeholder="Respuesta {{io + 1}}" formControlName="options">
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                    <mat-form-field class="formField" appearance="outline">
-                                        <mat-label>Seleccione la respuesta correcta</mat-label>
-                                        <mat-select formControlName="correctAnswer" multiple>
-                                            <mat-option *ngFor="let item of options.value" [value]="item.options">
-                                                {{item.options}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </mat-card>
-                                <br>
-
-                                <div>
-                                    <button mat-button (click)="addOption(i)">
-                    <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar Respuesta
-                  </button>
-                                    <button mat-button (click)="removeOption(i)">
-                    <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>Eliminar Respuesta
-                  </button>
-                                </div><br><br>
-                            </form>
-                        </div>
-                    </mat-card>
-                </div>
-                <mat-divider></mat-divider>
+                </div><br><br>
+              </div>
             </div>
-            <div class="buttonsStep">
-                <button mat-button (click)="addQuestion()">
+            <div *ngIf="questions.value[iq].typeOfResponse === 2">
+              <div formGroupName="answers" class="formGroup">
+                <mat-card>
+                  <div formArrayName="options"
+                    *ngFor="let option of question['controls'].answers['controls'].options['controls']; let io = index">
+                    <div [formGroupName]="io">
+                      <mat-form-field class="formField" appearance="outline">
+                        <mat-label>Respuesta {{io + 1}}</mat-label>
+                        <input matInput placeholder="Respuesta {{io + 1}}" formControlName="option">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <mat-form-field class="formField" appearance="outline">
+                    <mat-label>Seleccione la respuesta correcta</mat-label>
+                    <mat-select formControlName="correctAnswer" multiple>
+                      <mat-option *ngFor="let item of getOptionsCA(iq)" [value]="item.option">
+                        {{item.option}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-card>
+                <br>
+
+                <div>
+                  <button mat-button (click)="addOption(iq)">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar Respuesta
+                  </button>
+                   <button mat-button (click)="removeOption(iq)">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>Eliminar Respuesta
+                  </button>
+                </div><br><br>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="buttonsStep">
+        <button mat-button (click)="addQuestion()">
           <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar Pregunta
         </button>
-                <button mat-button (click)="removeQuestion()">
+        <button mat-button (click)="removeQuestion()">
           <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>Eliminar Pregunta
         </button>
-            </div>
-        </form>
-        <mat-divider></mat-divider>
-        <div class="buttonsStep">
-            <button mat-button matStepperPrevious>Atrás</button>
-            <button mat-button matStepperNext>Siguiente</button>
-        </div>
-    </mat-step>
+      </div>
+    </form>
+    <mat-divider></mat-divider>
+    <div class="buttonsStep">
+      <button mat-button matStepperPrevious>Atrás</button>
+      <button mat-button matStepperNext>Siguiente</button>
+    </div>
+  </mat-step>
 
 
-    <mat-step>
-        <ng-template matStepLabel>Listo</ng-template>
-        <div class="buttonsStep">
-            <button mat-button matStepperPrevious>Atrás</button>
-            <button mat-button (click)="saveExam()">Guardar</button>
-        </div>
-    </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Listo</ng-template>
+    <!-- <div class="buttonsStep">
+      <button mat-button matStepperPrevious>Atrás</button>
+      <button mat-button (click)="saveExam()">Guardar</button>
+    </div> -->
+  </mat-step>
 </mat-vertical-stepper>

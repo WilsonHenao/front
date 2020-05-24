@@ -12,10 +12,6 @@ import { ServiceService } from '../services/service.service';
 export class ExamenComponent implements OnInit {
 
   examFormGroup: FormGroup;
-  questionFormGroup: FormGroup;
-  optionFormGroup: FormGroup;
-  valuesFormArray: FormGroup;
-  i: any;
   tipos: any;
   examen: any;
   question: any;
@@ -40,30 +36,15 @@ export class ExamenComponent implements OnInit {
     options: undefined,
     question: undefined
   };
+  optionsLocal: FormArray;
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) {
-    this.valuesFormArray = this.formBuilder.group({
-      options: ['', Validators.required],
-    });
-    this.optionFormGroup = this.formBuilder.group({
-      id: '',
-      options: this.formBuilder.array([this.valuesFormArray]),
-      correctAnswer: [[], Validators.required],
-      question: ''
-    });
-    this.valuesFormArray = this.formBuilder.group({
-      description: ['', Validators.required],
-      image: ['', Validators.required],
-      assessment: ['', Validators.required],
-      typeOfResponse: [''],
-      answers: this.optionFormGroup
-    });
-    this.questionFormGroup = this.formBuilder.group({
-      id: '',
-      questions: this.formBuilder.array([this.valuesFormArray]),
-      exam: ''
-    });
   }
+
+  questionFormGroup = this.formBuilder.group({
+    name: ['', Validators.required],
+    questions: this.formBuilder.array([this.createQuestion()])
+  });
 
   ngOnInit() {
     this.examFormGroup = this.formBuilder.group({
@@ -73,29 +54,27 @@ export class ExamenComponent implements OnInit {
     });
     this.getTypes();
     this.getExam();
-    this.getQuestion();
-    this.getOption();
+    // this.getQuestion();
+    // this.getOption();
   }
 
-  addQuestion() {
-    this.questions.push(this.formBuilder.group({
+  createQuestion(): FormGroup {
+    return this.formBuilder.group({
       description: ['', Validators.required],
       image: ['', Validators.required],
       assessment: ['', Validators.required],
-      typeOfResponse: [''],
-      answers: this.optionFormGroup
-    }));
+      typeOfResponse: ['', Validators.required],
+      answers: this.formBuilder.group({
+        options: this.formBuilder.array([this.createOption()]),
+        correctAnswer: ['', Validators.required],
+      })
+    });
   }
 
-  addOption(i) {
-    console.log(this.questionFormGroup);
-    this.optiont = this.getOptions(i);
-    console.log(this.optiont);
-    console.log(i);
-    this.optiont.push(this.formBuilder.group({
-      options: ['', Validators.required]
-    }))
-    
+  createOption(): FormGroup {
+    return this.formBuilder.group({
+      option: ['', Validators.required]
+    });
   }
 
   getTypes() {
@@ -120,84 +99,92 @@ export class ExamenComponent implements OnInit {
     return this.questionFormGroup.get('questions') as FormArray;
   }
 
-  get options(): FormArray {
-    return this.optionFormGroup.get('options') as FormArray;
-  }
-
   getOptions(i): FormArray {
-    return this.questions.controls[i].get('answers.options') as FormArray;
+    return this.questions.at(i).get('answers').get('options') as FormArray;
   }
 
-  getQuestion(): any {
-    this.service.getAllQuestion().subscribe(success => {
-      this.question = success;
-      this.idQuestion = this.question.length;
-    }, error => {
-      console.log(error);
-    });
-    return this.idQuestion;
+  addOption(i) {
+    this.getOptions(i).push(this.createOption());
   }
 
-  getOption(): any {
-    this.service.getAllOptions().subscribe(success => {
-      this.option = success;
-      this.idOptions = this.option.length;
-    }, error => {
-      console.log(error);
-    });
-    return this.idOptions;
+  addQuestion() {
+    this.questions.push(this.createQuestion());
   }
+
+  getOptionsCA(i): Array<any> {
+    return (this.questions.at(i).value.answers.options);
+  }
+
+  // getQuestion(): any {
+  //   this.service.getAllQuestion().subscribe(success => {
+  //     this.question = success;
+  //     this.idQuestion = this.question.length;
+  //   }, error => {
+  //     console.log(error);
+  //   });
+  //   return this.idQuestion;
+  // }
+
+  // getOption(): any {
+  //   this.service.getAllOptions().subscribe(success => {
+  //     this.option = success;
+  //     this.idOptions = this.option.length;
+  //   }, error => {
+  //     console.log(error);
+  //   });
+  //   return this.idOptions;
+  // }
 
   removeQuestion() {
     this.questions.removeAt(this.questions.length - 1);
   }
 
-  removeOption(i) {
-    this.questions.value[i].answers.options.removeAt(this.questions.value[i].answers.options.length - 1);
-  }
+   removeOption(i) {
+     this.getOptions(i).removeAt(this.getOptions(i).length - 1);
+   }
 
-  saveExam() {
-    if (this.examFormGroup.valid && this.questionFormGroup.valid) {
-      this.examFormGroup.controls.id.setValue(this.idExamen);
-      this.service.postExam(this.examFormGroup.value).subscribe(success => {
-        const exam = success;
-        this.contOption = this.getOption();
-        this.saveQuestion(exam.id, this.contOption);
-      }, error => {
-        console.error(error);
-      });
-    }
-  }
+  // saveExam() {
+  //   if (this.examFormGroup.valid && this.questionFormGroup.valid) {
+  //     this.examFormGroup.controls.id.setValue(this.idExamen);
+  //     this.service.postExam(this.examFormGroup.value).subscribe(success => {
+  //       const exam = success;
+  //       this.contOption = this.getOption();
+  //       this.saveQuestion(exam.id, this.contOption);
+  //     }, error => {
+  //       console.error(error);
+  //     });
+  //   }
+  // }
 
-  saveQuestion(idExam: number, idOpt: number) {
-    this.contQuestion = this.getQuestion();
-    this.questionFormGroup.value.questions.forEach(element => {
-      this.contQuestion = this.contQuestion + 1;
-      this.questionModel.id = this.contQuestion;
-      this.questionModel.description = element.description;
-      this.questionModel.assessment = element.assessment;
-      this.questionModel.typeOfResponse = element.typeOfResponse;
-      console.log(element);
-      this.questionModel.correctAnswer = element.answers.correctAnswer;
-      this.questionModel.exam = idExam;
-      this.service.postQuestion(this.questionModel).subscribe(success => {
-        const quest = success;
-        idOpt = this.saveOption(quest.id, element.answers, idOpt);
-      });
-    });
-  }
+  // saveQuestion(idExam: number, idOpt: number) {
+  //   this.contQuestion = this.getQuestion();
+  //   this.questionFormGroup.value.questions.forEach(element => {
+  //     this.contQuestion = this.contQuestion + 1;
+  //     this.questionModel.id = this.contQuestion;
+  //     this.questionModel.description = element.description;
+  //     this.questionModel.assessment = element.assessment;
+  //     this.questionModel.typeOfResponse = element.typeOfResponse;
+  //     console.log(element);
+  //     this.questionModel.correctAnswer = element.answers.correctAnswer;
+  //     this.questionModel.exam = idExam;
+  //     this.service.postQuestion(this.questionModel).subscribe(success => {
+  //       const quest = success;
+  //       idOpt = this.saveOption(quest.id, element.answers, idOpt);
+  //     });
+  //   });
+  // }
 
-  saveOption(idOption: number, item: any, index: number): any {
-    item.options.forEach(answer => {
-      index = index + 1;
-      this.answerModel.id = index;
-      this.answerModel.options = answer.options;
-      this.answerModel.question = idOption;
+  // saveOption(idOption: number, item: any, index: number): any {
+  //   item.options.forEach(answer => {
+  //     index = index + 1;
+  //     this.answerModel.id = index;
+  //     this.answerModel.options = answer.options;
+  //     this.answerModel.question = idOption;
 
-      this.service.postOption(this.answerModel).subscribe(success => {
-      });
-    });
-    return index;
-  }
+  //     this.service.postOption(this.answerModel).subscribe(success => {
+  //     });
+  //   });
+  //   return index;
+  // }
 
 }
