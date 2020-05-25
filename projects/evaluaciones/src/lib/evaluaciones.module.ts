@@ -15,12 +15,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule} from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule} from '@angular/material/table';
+import { MatDialogModule} from '@angular/material/dialog';
 
 import { ExamenComponent } from './examen/examen.component';
 import { EstudianteComponent } from './estudiante/estudiante.component';
 import { ProfesorComponent } from './profesor/profesor.component';
-import { TipoUnoComponent } from './tipo-uno/tipo-uno.component';
-import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
+import { RealizarExamenComponent } from './realizar-examen/realizar-examen.component';
 
 
 
@@ -30,8 +30,10 @@ import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
     ExamenComponent,
     EstudianteComponent,
     ProfesorComponent,
-    TipoUnoComponent,
-    TipoDosComponent,
+    RealizarExamenComponent
+  ],
+  entryComponents: [
+    RealizarExamenComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,8 @@ import { TipoDosComponent } from './tipo-dos/tipo-dos.component';
     MatRadioModule,
     MatDividerModule,
     MatTabsModule,
-    MatTableModule
+    MatTableModule,
+    MatDialogModule
   ],
 })
 export class EvaluacionesModule { }

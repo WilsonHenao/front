@@ -165,7 +165,15 @@ export class ExamenComponent implements OnInit {
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
       console.log(element);
-      this.questionModel.correctAnswer = element.answers.correctAnswer;
+      if (element.answers.correctAnswer.length > 1){
+        let correctAnswers = '';
+        element.answers.correctAnswer.forEach(option => {
+          correctAnswers = correctAnswers + option + ',';
+        });
+        this.questionModel.correctAnswer = correctAnswers;
+      } else{
+        this.questionModel.correctAnswer = element.answers.correctAnswer;
+      }
       this.questionModel.exam = idExam;
       this.service.postQuestion(this.questionModel).subscribe(success => {
         const quest = success;
@@ -180,8 +188,6 @@ export class ExamenComponent implements OnInit {
       this.answerModel.id = index;
       this.answerModel.options = answer.option;
       this.answerModel.question = idOption;
-      console.log(this.answerModel.id);
-      console.log(this.answerModel);
       this.service.postOption(this.answerModel).subscribe(success => {
       });
     });

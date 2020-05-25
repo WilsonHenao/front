@@ -41,6 +41,13 @@ export class ServiceService {
     return this.http.post(this.myUrl + 'api/v1/option', option);
   }
 
+  public getQuestion(id): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/question/exam/' + id);
+  }
+
+  public getOption(id): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/option/question/' + id);
+  }
 
 
 }
