@@ -1,5 +1,27 @@
 <h2 mat-dialog-title>{{data.exam.introduction}}</h2>
-<p></p>
+<ol>
+  <li *ngFor="let item of question">
+    <h4>{{item.question.description}}</h4>
+      <div *ngIf="item.question.typeOfResponse === 1" class="preguntas">
+        <mat-radio-group>
+          <div *ngFor="let opt of item.option" class="opciones">
+            <mat-radio-button [value]="opt">
+              {{opt.options}}
+            </mat-radio-button>
+          </div>
+        </mat-radio-group>
+      </div>
+      <div *ngIf="item.question.typeOfResponse === 2" class="preguntas">
+        <section>
+          <div *ngFor="let opt of item.option" class="opciones">
+            <mat-checkbox [value]="opt">
+              {{opt.options}}
+            </mat-checkbox>
+          </div>
+        </section>
+      </div>
+  </li>
+</ol>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancelar</button>
   <button mat-button [mat-dialog-close]="true">Enviar</button>

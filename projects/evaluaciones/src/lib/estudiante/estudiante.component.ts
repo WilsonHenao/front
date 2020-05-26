@@ -1,6 +1,6 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { ServiceService } from '../services/service.service';
-import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { RealizarExamenComponent } from '../realizar-examen/realizar-examen.component';
 
 @Component({
@@ -23,9 +23,11 @@ export class EstudianteComponent implements OnInit {
   realizarExamen(i) {
     const dialogRef = this.dialog.open(RealizarExamenComponent, {
       disableClose: true,
-    data: { exam : this.examen[i],
-            quest : this.listQuestions(this.examen[i].id),
-          }});
+      height: '600px',
+      width: '600px',
+      data: { exam: this.examen[i] },
+      autoFocus: false
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('Dialog result: ${result}');
@@ -36,44 +38,9 @@ export class EstudianteComponent implements OnInit {
     this.getExam();
   }
 
-  listQuestions(id: any){
-    console.log(this.question);
-  }
-
   getExam() {
     this.service.getAllExam().subscribe(success => {
       this.examen = success;
-      this.getIdExam(this.examen);
-    }, error => {
-      console.log(error);
-    });
-  }
-
-  getIdExam(exam: any){
-    exam.forEach(element => {
-      this.getQuestions(element.id);
-    });
-  }
-  getQuestions(i) {
-    this.service.getQuestion(i).subscribe(success => {
-      this.question = success;
-      console.log(this.question);
-      this.getIdQuestion(this.question);
-    }, error => {
-      console.log(error);
-    });
-  }
-
-  getIdQuestion(quest: any){
-    quest.forEach(element => {
-      this.getOptions(element.id);
-    });
-  }
-
-  getOptions(i) {
-    this.service.getOption(i).subscribe(success => {
-      this.option = success;
-      console.log(this.option);
     }, error => {
       console.log(error);
     });

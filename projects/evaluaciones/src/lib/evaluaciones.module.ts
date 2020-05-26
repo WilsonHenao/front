@@ -17,6 +17,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule} from '@angular/material/table';
 import { MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { ExamenComponent } from './examen/examen.component';
 import { EstudianteComponent } from './estudiante/estudiante.component';
@@ -53,7 +54,8 @@ import { RealizarExamenComponent } from './realizar-examen/realizar-examen.compo
     MatTabsModule,
     MatTableModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCheckboxModule
   ],
 })
 export class EvaluacionesModule { }
