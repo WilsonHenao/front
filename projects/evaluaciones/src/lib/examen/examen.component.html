@@ -45,8 +45,19 @@
             </mat-form-field>
 
             <mat-form-field class="formField" appearance="outline">
-              <mat-label>Valoración</mat-label>
-              <input matInput formControlName="assessment" placeholder="Valoración" required>
+              <mat-label>Valoración en puntos</mat-label>
+              <mat-select formControlName="assessment">
+                <mat-option value="10">10</mat-option>
+                <mat-option value="20">20</mat-option>
+                <mat-option value="30">30</mat-option>
+                <mat-option value="40">40</mat-option>
+                <mat-option value="50">50</mat-option>
+                <mat-option value="60">60</mat-option>
+                <mat-option value="70">70</mat-option>
+                <mat-option value="80">80</mat-option>
+                <mat-option value="90">90</mat-option>
+                <mat-option value="100">100</mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field class="formField" appearance="outline">
@@ -85,7 +96,7 @@
                   <button mat-button (click)="addOption(iq)">
                     <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar Respuesta
                   </button>
-                   <button mat-button (click)="removeOption(iq)">
+                  <button mat-button (click)="removeOption(iq)">
                     <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>Eliminar Respuesta
                   </button>
                 </div><br><br>
@@ -118,7 +129,7 @@
                   <button mat-button (click)="addOption(iq)">
                     <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>Agregar Respuesta
                   </button>
-                   <button mat-button (click)="removeOption(iq)">
+                  <button mat-button (click)="removeOption(iq)">
                     <mat-icon aria-hidden="false" aria-label="Example home icon">remove</mat-icon>Eliminar Respuesta
                   </button>
                 </div><br><br>
@@ -147,7 +158,7 @@
 
   <mat-step>
     <ng-template matStepLabel>Listo</ng-template>
-     <div class="buttonsStep">
+    <div class="buttonsStep">
       <button mat-button matStepperPrevious>Atrás</button>
       <button mat-button (click)="saveExam()">Guardar</button>
     </div>

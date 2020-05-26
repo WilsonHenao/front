@@ -23,8 +23,9 @@ export class EstudianteComponent implements OnInit {
   realizarExamen(i) {
     const dialogRef = this.dialog.open(RealizarExamenComponent, {
       disableClose: true,
-    data: { exam : this.examen[i].introduction}});
-    console.log(this.examen[i].introduction);
+    data: { exam : this.examen[i],
+            quest : this.listQuestions(this.examen[i].id),
+          }});
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('Dialog result: ${result}');
@@ -35,12 +36,14 @@ export class EstudianteComponent implements OnInit {
     this.getExam();
   }
 
+  listQuestions(id: any){
+    console.log(this.question);
+  }
+
   getExam() {
     this.service.getAllExam().subscribe(success => {
       this.examen = success;
-      this.idExamen = this.examen.length + 1;
       this.getIdExam(this.examen);
-      console.log('Examen ' + this.idExamen);
     }, error => {
       console.log(error);
     });
@@ -54,9 +57,8 @@ export class EstudianteComponent implements OnInit {
   getQuestions(i) {
     this.service.getQuestion(i).subscribe(success => {
       this.question = success;
-      this.getIdQuestion(this.question);
       console.log(this.question);
-      this.idQuestion = this.question.length;
+      this.getIdQuestion(this.question);
     }, error => {
       console.log(error);
     });
@@ -71,7 +73,7 @@ export class EstudianteComponent implements OnInit {
   getOptions(i) {
     this.service.getOption(i).subscribe(success => {
       this.option = success;
-      this.idOptions = this.option.length;
+      console.log(this.option);
     }, error => {
       console.log(error);
     });

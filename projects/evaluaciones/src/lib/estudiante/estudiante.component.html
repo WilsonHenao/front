@@ -3,7 +3,7 @@
 
         <ng-container matColumnDef="examDescription">
             <th mat-header-cell *matHeaderCellDef> Descripción de examen </th>
-            <td mat-cell *matCellDef="let examen" > {{examen.introduction}} </td>
+            <td mat-cell *matCellDef="let element" > {{element.introduction}} </td>
         </ng-container>
 
         <ng-container matColumnDef="numberQuestion">
@@ -13,7 +13,7 @@
 
         <ng-container matColumnDef="button">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"><button mat-button (click)="realizarExamen(0)">Realizar examen</button></td>
+            <td mat-cell *matCellDef="let element"><button mat-button (click)="realizarExamen(element.id - 1)">Realizar examen</button></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

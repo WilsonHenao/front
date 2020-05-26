@@ -3,6 +3,7 @@ import { Question } from './../model/question.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ServiceService } from '../services/service.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'lib-examen',
@@ -38,7 +39,7 @@ export class ExamenComponent implements OnInit {
   };
   optionsLocal: FormArray;
 
-  constructor(private formBuilder: FormBuilder, private service: ServiceService) {
+  constructor(private formBuilder: FormBuilder, private service: ServiceService, private alerta: MatSnackBar) {
   }
 
   questionFormGroup = this.formBuilder.group({
@@ -144,16 +145,32 @@ export class ExamenComponent implements OnInit {
 
   saveExam() {
     if (this.examFormGroup.valid && this.questionFormGroup.valid) {
-      this.examFormGroup.controls.id.setValue(this.idExamen);
-      this.service.postExam(this.examFormGroup.value).subscribe(success => {
-        const exam = success;
-        this.contOption = this.getOption();
-        this.saveQuestion(exam.id, this.contOption);
-      }, error => {
-        console.error(error);
+      let valoracion = 0;
+      this.questionFormGroup.value.questions.forEach(element => {
+        valoracion = parseInt(element.assessment) + valoracion;
+        console.log(valoracion);
       });
+
+      if (valoracion === 100) {
+        this.examFormGroup.controls.id.setValue(this.idExamen);
+        this.service.postExam(this.examFormGroup.value).subscribe(success => {
+          const exam = success;
+          this.contOption = this.getOption();
+          this.saveQuestion(exam.id, this.contOption);
+        }, error => {
+          console.error(error);
+        });
+      }else {
+        this.openAlerta();
+      }
     }
     console.log(this.questionFormGroup.valid);
+  }
+
+  openAlerta() {
+    this.alerta.open('La valoracion del examen debe sumar 100', null, {
+      duration: 2000,
+    });
   }
 
   saveQuestion(idExam: number, idOpt: number) {
@@ -165,13 +182,13 @@ export class ExamenComponent implements OnInit {
       this.questionModel.assessment = element.assessment;
       this.questionModel.typeOfResponse = element.typeOfResponse;
       console.log(element);
-      if (element.answers.correctAnswer.length > 1){
+      if (element.answers.correctAnswer.length > 1) {
         let correctAnswers = '';
         element.answers.correctAnswer.forEach(option => {
           correctAnswers = correctAnswers + option + ',';
         });
         this.questionModel.correctAnswer = correctAnswers;
-      } else{
+      } else {
         this.questionModel.correctAnswer = element.answers.correctAnswer;
       }
       this.questionModel.exam = idExam;
