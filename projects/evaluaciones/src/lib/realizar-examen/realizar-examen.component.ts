@@ -1,3 +1,4 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { ServiceService } from '../services/service.service';
@@ -16,8 +17,9 @@ export class RealizarExamenComponent implements OnInit {
   options: any;
   question: Array<Questions> = [];
   ngModelOption: any;
+  examGroup: FormGroup;
   constructor(private dialogRef: MatDialogRef<RealizarExamenComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-              private service: ServiceService) {
+              private service: ServiceService, private formBuilder: FormBuilder) {
     dialogRef.disableClose = true;
    }
 
@@ -25,6 +27,13 @@ export class RealizarExamenComponent implements OnInit {
 
   ngOnInit(): void {
     this.getQuestions(this.data.exam.id);
+    this.examGroup = this.formBuilder.group({
+      answerCtrl: [[]]
+    });
+  }
+
+  saveAnswer(){
+    console.log(this.examGroup);
   }
 
   getQuestions(i) {
@@ -44,7 +53,6 @@ export class RealizarExamenComponent implements OnInit {
     this.service.getOption(element.id).subscribe(success => {
       q.option = success;
       this.question.push(q);
-      console.log(this.question);
     }, error => {
       console.log(error);
     });

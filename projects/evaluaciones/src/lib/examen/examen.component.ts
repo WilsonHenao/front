@@ -1,7 +1,7 @@
 import { Option } from './../model/option.model';
 import { Question } from './../model/question.model';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { ServiceService } from '../services/service.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -143,6 +143,20 @@ export class ExamenComponent implements OnInit {
     this.getOptions(i).removeAt(this.getOptions(i).length - 1);
   }
 
+  validateTypeOfReponse(index) {
+    setTimeout(() => {
+      const question = this.questions.at(index) as FormGroup;
+      if (this.questions.at(index).get('typeOfResponse').value === 3) {
+        const correctAnswerFC = question.get('answers').get('correctAnswer') as FormControl;
+        correctAnswerFC.clearValidators();
+        correctAnswerFC.updateValueAndValidity();
+        const optionFC = question.get('answers').get('options').get('0').get('option') as FormControl;
+        optionFC.clearValidators();
+        optionFC.updateValueAndValidity();
+      }
+    }, 2000);
+  }
+
   saveExam() {
     if (this.examFormGroup.valid && this.questionFormGroup.valid) {
       let valoracion = 0;
@@ -194,7 +208,9 @@ export class ExamenComponent implements OnInit {
       this.questionModel.exam = idExam;
       this.service.postQuestion(this.questionModel).subscribe(success => {
         const quest = success;
-        idOpt = this.saveOption(quest.id, element.answers, idOpt);
+        if (quest.typeOfResponse !== 3) {
+          idOpt = this.saveOption(quest.id, element.answers, idOpt);
+        }
       });
     });
   }

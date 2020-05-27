@@ -1,9 +1,11 @@
-<h2 mat-dialog-title>{{data.exam.introduction}}</h2>
+<div>
+  <h2 mat-dialog-title>{{data.exam.introduction}}</h2>
+<div [formGroup]="examGroup">
 <ol>
   <li *ngFor="let item of question">
     <h4>{{item.question.description}}</h4>
       <div *ngIf="item.question.typeOfResponse === 1" class="preguntas">
-        <mat-radio-group>
+        <mat-radio-group formControlName = "answerCtrl">
           <div *ngFor="let opt of item.option" class="opciones">
             <mat-radio-button [value]="opt">
               {{opt.options}}
@@ -12,7 +14,7 @@
         </mat-radio-group>
       </div>
       <div *ngIf="item.question.typeOfResponse === 2" class="preguntas">
-        <section>
+        <section formControlName = "answerCtrl">
           <div *ngFor="let opt of item.option" class="opciones">
             <mat-checkbox [value]="opt">
               {{opt.options}}
@@ -20,9 +22,14 @@
           </div>
         </section>
       </div>
+      <div *ngIf="item.question.typeOfResponse === 3" class="preguntas">
+        <textarea formControlName = "answerCtrl"></textarea>
+      </div>
   </li>
 </ol>
+</div>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true">Enviar</button>
+  <button mat-button [mat-dialog-close]="true" (click)="saveAnswer()">Enviar</button>
 </mat-dialog-actions>
+</div>

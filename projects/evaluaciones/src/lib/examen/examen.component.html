@@ -62,7 +62,7 @@
 
             <mat-form-field class="formField" appearance="outline">
               <mat-label>Tipo de respuesta</mat-label>
-              <mat-select formControlName="typeOfResponse">
+              <mat-select formControlName="typeOfResponse" (valueChange)="validateTypeOfReponse(iq)">
                 <mat-option *ngFor="let item of tipos" [value]="item.id">
                   {{item.responseTypeName}}
                 </mat-option>
