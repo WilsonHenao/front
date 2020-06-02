@@ -35,12 +35,18 @@ export class RealizarExamenComponent implements OnInit {
 
   createAnswer(): FormGroup {
     return this.formBuilder.group({
-      answerCtrl: ['']
+      answerCtrl: [''],
+      questionCtrl: ['']
     });
+  }
+
+  save(value){
+    console.log(value);
   }
 
   saveAnswer(){
     this.validateAnswers();
+    console.log(this.examGroup.value);
   }
 
   validateAnswers(){
