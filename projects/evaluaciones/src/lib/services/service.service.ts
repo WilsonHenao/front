@@ -29,6 +29,14 @@ export class ServiceService {
     return this.http.get<any>(this.myUrl + 'api/v1/option/all');
   }
 
+  public getAllNotes(): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/note/all');
+  }
+
+  public getAllAnswers(): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/answer/all');
+  }
+
   public postExam(exam: any): Observable<any> {
     return this.http.post(this.myUrl + 'api/v1/exam', exam);
   }
@@ -39,6 +47,14 @@ export class ServiceService {
 
   public postOption(option: any): Observable<any> {
     return this.http.post(this.myUrl + 'api/v1/option', option);
+  }
+
+  public postNote(note: any): Observable<any> {
+    return this.http.post(this.myUrl + 'api/v1/note', note);
+  }
+
+  public postAnswer(answer: any): Observable<any> {
+    return this.http.post(this.myUrl + 'api/v1/answer', answer);
   }
 
   public getQuestion(id): Observable<any> {

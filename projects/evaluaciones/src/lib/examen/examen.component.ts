@@ -3,7 +3,8 @@ import { Question } from './../model/question.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { ServiceService } from '../services/service.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Note } from '../model/note.model';
 
 @Component({
   selector: 'lib-examen',
@@ -18,9 +19,11 @@ export class ExamenComponent implements OnInit {
   question: any;
   option: any;
   optiont: any;
+  note: any;
   idOptions: number;
   idExamen: number;
   idQuestion: number;
+  idNote: number;
   contQuestion: number;
   contOption: number;
   questionModel: Question = {
@@ -36,6 +39,13 @@ export class ExamenComponent implements OnInit {
     id: undefined,
     options: undefined,
     question: undefined
+  };
+  noteModel: Note = {
+    id: undefined,
+    idTeacher: undefined,
+    idStudent: undefined,
+    idExam: undefined,
+    finalNote: undefined,
   };
   optionsLocal: FormArray;
 
@@ -56,6 +66,7 @@ export class ExamenComponent implements OnInit {
     this.getExam();
     this.getQuestion();
     this.getOption();
+    this.getNote();
   }
 
   createQuestion(): FormGroup {
@@ -92,6 +103,14 @@ export class ExamenComponent implements OnInit {
       console.log('Examen ' + this.idExamen);
     }, error => {
       console.log(error);
+    });
+  }
+
+  getNote() {
+    this.service.getAllNotes().subscribe(success => {
+      this.note = success;
+      this.idNote = this.note.length + 1;
+      console.log('Nota' + this.idNote);
     });
   }
 
@@ -161,6 +180,7 @@ export class ExamenComponent implements OnInit {
     if (this.examFormGroup.valid && this.questionFormGroup.valid) {
       let valoracion = 0;
       this.questionFormGroup.value.questions.forEach(element => {
+        // tslint:disable-next-line: radix
         valoracion = parseInt(element.assessment) + valoracion;
         console.log(valoracion);
       });
@@ -170,11 +190,12 @@ export class ExamenComponent implements OnInit {
         this.service.postExam(this.examFormGroup.value).subscribe(success => {
           const exam = success;
           this.contOption = this.getOption();
+          this.saveNote(exam.id);
           this.saveQuestion(exam.id, this.contOption);
         }, error => {
           console.error(error);
         });
-      }else {
+      } else {
         this.openAlerta();
       }
     }
@@ -225,6 +246,19 @@ export class ExamenComponent implements OnInit {
       });
     });
     return index;
+  }
+
+  saveNote(idExam: number) {
+    this.noteModel.id = this.idNote;
+    this.noteModel.idTeacher = 1;
+    this.noteModel.idStudent = 2;
+    this.noteModel.idExam = idExam;
+    this.service.postNote(this.noteModel).subscribe(success => {
+      const nota = success;
+      console.log(nota);
+    }, error => {
+      console.log(error);
+    });
   }
 
 }
