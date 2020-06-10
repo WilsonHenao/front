@@ -1,1 +1,13 @@
-<p>listar-examen works!</p>
+<table>
+  <tr>
+    <thead>Descripción de examen</thead>
+    <th></th>
+  </tr>
+
+  <tr>
+    <div *ngFor="let item of examArray">
+      <td>{{item.exam.introduction}}</td>
+      <td><button mat-button (click)="obtenerExamen(item.exam.id)">Ver examen</button></td>
+    </div>
+  </tr>
+</table>

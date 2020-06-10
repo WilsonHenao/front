@@ -61,6 +61,14 @@ export class ServiceService {
     return this.http.get<any>(this.myUrl + 'api/v1/question/exam/' + id);
   }
 
+  public getIdQuestion(id): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/question/' + id);
+  }
+
+  public getIdExam(id): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/exam/' + id);
+  }
+
   public getOption(id): Observable<any> {
     return this.http.get<any>(this.myUrl + 'api/v1/option/question/' + id);
   }

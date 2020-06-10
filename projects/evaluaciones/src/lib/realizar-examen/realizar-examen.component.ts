@@ -1,4 +1,4 @@
-import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ServiceService } from '../services/service.service';
@@ -69,14 +69,17 @@ export class RealizarExamenComponent implements OnInit {
       this.examGroup.value.answers.forEach(element => {
         idAns = idAns + 1;
         this.answerModel.id = idAns;
-        if (element.answer.length > 1) {
+        if (element.question.typeOfResponse === 3) {
+          this.answerModel.answer = element.answer;
+          this.answerModel.question = element.question.id;
+          cont = cont + 1;
+        } else if (element.answer.length > 1) {
           let answers = '';
           element.answer.forEach(ans => {
             answers = answers + ans.options + ',';
+            this.answerModel.question = ans.question;
           });
           this.answerModel.answer = answers;
-          this.answerModel.question = element.question.id;
-          cont = cont + 1;
         } else {
           this.answerModel.answer = element.answer.options;
           this.answerModel.question = element.answer.question;
@@ -85,12 +88,10 @@ export class RealizarExamenComponent implements OnInit {
         this.service.postAnswer(this.answerModel).subscribe(success => {
         });
       });
-      console.log(this.examGroup.value);
     }
     if (cont === 0) {
       this.validateAnswers();
     }
-    console.log(this.examGroup.value);
   }
 
   validateAnswers() {
@@ -101,7 +102,6 @@ export class RealizarExamenComponent implements OnInit {
         if (this.examGroup.value.answers[index].answer.question === this.questions[index].id) {
           if (this.examGroup.value.answers[index].answer.options === this.questions[index].correctAnswer) {
             valoracion = ((this.data.exam.maximumNote) * (this.questions[index].assessment * 0.01)) + valoracion;
-            console.log(valoracion);
           }
         }
         this.openAlerta(valoracion);

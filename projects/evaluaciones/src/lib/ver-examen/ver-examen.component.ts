@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
 
 @Component({
   selector: 'lib-ver-examen',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VerExamenComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialogRef: MatDialogRef<VerExamenComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit(): void {
+    console.log(this.data.exams.exam);
   }
 
 }

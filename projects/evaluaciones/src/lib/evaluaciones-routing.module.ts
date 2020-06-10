@@ -1,3 +1,4 @@
+import { ListarExamenComponent } from './listar-examen/listar-examen.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProfesorComponent } from './profesor/profesor.component';
@@ -9,6 +10,9 @@ const routes: Routes = [
   },
   {
     path: 'estudiante', component: EstudianteComponent
+  },
+  {
+    path: 'examenes', component: ListarExamenComponent
   }
 ];
 
