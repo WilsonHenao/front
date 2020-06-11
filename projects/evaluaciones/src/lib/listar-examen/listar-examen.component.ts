@@ -24,9 +24,7 @@ export class ListarExamenComponent implements OnInit {
       disableClose: true,
       height: '600px',
       width: '600px',
-      data: { exams: this.examArray[i],
-              answers: this.answer,
-              questions: this.question },
+      data: { exams: this.examArray[i] },
       autoFocus: false
     });
 
