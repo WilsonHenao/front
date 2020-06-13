@@ -17,6 +17,7 @@ export class VerExamenComponent implements OnInit {
   questions: any;
   examGroup: FormGroup;
   question: Array<Questions> = [];
+  answer: any;
 
   constructor(private dialogRef: MatDialogRef<VerExamenComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
               private service: ServiceService, private formBuilder: FormBuilder) {
@@ -58,6 +59,13 @@ export class VerExamenComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+  getAnswer(i): any {
+    this.service.getAnswer(i).subscribe(success => {
+      this.answer = success;
+    });
+    return this.answer.answer;
   }
 
   get allAnswers(): FormArray {

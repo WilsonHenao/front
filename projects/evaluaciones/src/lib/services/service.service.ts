@@ -73,5 +73,9 @@ export class ServiceService {
     return this.http.get<any>(this.myUrl + 'api/v1/option/question/' + id);
   }
 
+  public getAnswer(id): Observable<any> {
+    return this.http.get<any>(this.myUrl + 'api/v1/answer/question/' + id);
+  }
+
 
 }
