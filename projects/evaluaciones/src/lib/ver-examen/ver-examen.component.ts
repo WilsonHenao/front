@@ -6,6 +6,7 @@ import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
 export class Questions {
   question: any;
   option: any;
+  answer: any;
 }
 
 @Component({
@@ -29,7 +30,6 @@ export class VerExamenComponent implements OnInit {
     this.examGroup = this.formBuilder.group({
       answers: this.formBuilder.array([])
     });
-    console.log(this.data.exams.exam.id);
   }
 
   createAnswer(): FormGroup {
@@ -53,6 +53,9 @@ export class VerExamenComponent implements OnInit {
   getOptions(element: any) {
     const q = new Questions();
     q.question = element;
+    this.service.getAnswer(element.id).subscribe(success => {
+      q.answer = success;
+    }),
     this.service.getOption(element.id).subscribe(success => {
       q.option = success;
       this.question.push(q);

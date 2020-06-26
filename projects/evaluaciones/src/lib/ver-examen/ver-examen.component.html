@@ -8,15 +8,12 @@
           <div *ngIf="item.question.typeOfResponse === 1" class="preguntas">
             <mat-radio-group>
               <div *ngFor="let opt of item.option" class="opciones">
-                <div *ngIf="opt.options === getAnswer(opt.question)">
+                <div  >
                   <mat-radio-button disabled>
                     {{opt.options}}
                   </mat-radio-button>
                 </div>
-                <mat-radio-button disabled [value]="opt">
-                  {{opt.options}}
-                </mat-radio-button>
-              </div>
+                </div>
             </mat-radio-group>
           </div>
         </li>
