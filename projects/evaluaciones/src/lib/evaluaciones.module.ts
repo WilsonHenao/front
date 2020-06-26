@@ -23,6 +23,8 @@ import { ExamenComponent } from './examen/examen.component';
 import { EstudianteComponent } from './estudiante/estudiante.component';
 import { ProfesorComponent } from './profesor/profesor.component';
 import { RealizarExamenComponent } from './realizar-examen/realizar-examen.component';
+import { ListarExamenComponent } from './listar-examen/listar-examen.component';
+import { VerExamenComponent } from './ver-examen/ver-examen.component';
 
 
 
@@ -32,7 +34,9 @@ import { RealizarExamenComponent } from './realizar-examen/realizar-examen.compo
     ExamenComponent,
     EstudianteComponent,
     ProfesorComponent,
-    RealizarExamenComponent
+    RealizarExamenComponent,
+    ListarExamenComponent,
+    VerExamenComponent
   ],
   entryComponents: [
     RealizarExamenComponent

@@ -7,7 +7,7 @@
           <div [formGroupName]="i">
             <h4>{{item.question.description}}</h4>
             <div *ngIf="item.question.typeOfResponse === 1" class="preguntas">
-              <mat-radio-group formControlName="answerCtrl">
+              <mat-radio-group formControlName="answer">
                 <div *ngFor="let opt of item.option" class="opciones">
                   <mat-radio-button [value]="opt">
                     {{opt.options}}
@@ -18,7 +18,7 @@
             <div *ngIf="item.question.typeOfResponse === 2" class="preguntas">
               <mat-form-field class="formField" appearance="outline">
                 <mat-label>Seleccione las respuestas correctas</mat-label>
-                <mat-select formControlName="answerCtrl" multiple>
+                <mat-select formControlName="answer" multiple>
                   <mat-option *ngFor="let opt of item.option" class="opciones" [value]="opt">
                     {{opt.options}}
                   </mat-option>
@@ -26,19 +26,15 @@
               </mat-form-field>
             </div>
             <div *ngIf="item.question.typeOfResponse === 3" class="preguntas">
-              <div>
-                <input type="text" value="{{item.question}}" formControlName="questionCtrl" *ngIf="false">
-                <br>
-                <textarea formControlName="answerCtrl" (ngModelChange)="save(item.question)"></textarea>
+                <textarea formControlName="answer" (ngModelChange)="save(item.question, i)"></textarea>
               </div>
             </div>
-          </div>
         </li>
       </ol>
     </div>
   </div>
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-button [mat-dialog-close]="true" (click)="saveAnswer()">Enviar</button>
+    <button mat-button [mat-dialog-close]="true" (click)="saveAnswer()" [disabled]="!examGroup.valid">Enviar</button>
   </mat-dialog-actions>
 </div>

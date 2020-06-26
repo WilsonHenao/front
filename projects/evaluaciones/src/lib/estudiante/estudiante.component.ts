@@ -1,6 +1,6 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../services/service.service';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RealizarExamenComponent } from '../realizar-examen/realizar-examen.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { RealizarExamenComponent } from '../realizar-examen/realizar-examen.comp
 })
 
 export class EstudianteComponent implements OnInit {
-  displayedColumns = ['examDescription', 'numberQuestion', 'button'];
+  displayedColumns = ['examDescription', 'button'];
   examen: any;
   idExamen: any;
   question: any;
